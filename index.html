@@ -31,22 +31,22 @@
     <div class="float-right bg-danger rounded-circle text-center pt-2" style="width: 3em;height: 3em;color: white"><i class="fa fa-plus fa-2x mx-auto" aria-hidden="true"></i></div>
 
 </div>
-<div id="signinDiv" style="display: none;color: aliceblue;">
+<div id="signinDiv" class="container bg-secondary p-5" style="display: none;color: aliceblue;">
 
 
-    <ul class="col-md-6 mx-auto nav nav-tabs mb-5">
+    <ul class="col-md-10 mx-auto nav nav-tabs mb-5">
         <li class="nav-item col-md-6 ">
-            <a class="nav-link active" data-toggle="tab" href="#Connection">Connection</a>
+            <a class="nav-link active text-info text-center" data-toggle="tab" href="#Connection">Connection</a>
         </li>
         <li class="nav-item col-md-6 ">
-            <a class="nav-link" data-toggle="tab" href="#Inscription">Inscription</a>
+            <a class="nav-link text-info text-center" data-toggle="tab" href="#Inscription">Inscription</a>
         </li>
     </ul>
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade show active" id="Connection">
-            <div class="col-md-4 mx-auto">
-                <h1 class="text-center">connection</h1>
-                <h1 class="text-center mb-4">ppoupardin@test.com - adminn</h1>
+            <h1 class="text-center">Connection</h1>
+            <h1 class="text-center mb-4">ppoupardin@test.com - adminn</h1>
+            <div class="col-md-6 mx-auto">
                 <fieldset>
                     <div class="form-group">
                         <label for="signInEmail">Address Email</label>
@@ -57,13 +57,13 @@
                         <label for="signInPassword">Password</label>
                         <input type="password" min="6" class="form-control" id="signInPassword" placeholder="Password">
                     </div>
-                    <button type="button" id="signInSubmit" class="btn btn-primary">Submit</button>
+                    <button type="button" id="signInSubmit" class="btn btn-danger btn-block">Connection</button>
                 </fieldset>
             </div>
         </div>
         <div class="tab-pane fade" id="Inscription">
-            <div class="col-md-4 mx-auto">
-                <h1 class="text-center">Inscription</h1>
+            <h1 class="text-center">Inscription</h1>
+            <div class="col-md-6 mx-auto">
                 <fieldset>
                     <div class="form-group">
                         <label for="signInEmail">Address Email</label>
@@ -83,7 +83,7 @@
                         <label for="signInPassword">Pseudo</label>
                         <input type="text" min="6" class="form-control" id="signUpName" placeholder="Entrer un pseudo">
                     </div>
-                    <button type="button" id="signUpSubmit" class="btn btn-primary">Submit</button>
+                    <button type="button" id="signUpSubmit" class="btn btn-danger btn-block">S'inscrire</button>
                 </fieldset>
             </div>
         </div>
