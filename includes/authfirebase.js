@@ -14,22 +14,11 @@ $(function () {
     firebase.initializeApp(firebaseConfig);
 
     if (localStorage.getItem('user') === null){
-        console.log("pas co la");
         $('#signInSubmit').click(function () {
             let email = $('#signInEmail').val();
             let password = $('#signInPassword').val();
             firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
-                firebase.database().ref("/Users/").child(user.user.uid).on("value", (value) => {
-                    var idUser = user.user.uid;
-                    // var userSurname = value.val().Surname;
-                    // var userName = value.val().Name;
-                    $('#modalAuthAlert').hide();
-
-                    console.log("on ce log");
-                    localStorage.setItem('user', '"'+idUser+'"');
-                    sessionStorage.setItem('user', '"'+idUser+'"');
-                    document.location.reload();
-                })
+                // Si connection reussi
             }).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -78,9 +67,27 @@ $(function () {
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified;
 
-    firebase.auth().onAuthStateChanged(function(user) {
-        console.log(user);
-        if (user) {
+    if (user) {
+        name = user.displayName;
+        email = user.email;
+        photoUrl = user.photoURL;
+        emailVerified = user.emailVerified;
+        uid = user.uid;
+        localStorage.setItem('user', uid);
+        $('#mainContent').fadeIn();
+        $('#signinDiv').hide();
+        $('#mainContent').load('includes/mainTask.html',function () {
+            $('#mainSubTitle').html('Taches de '+name);
+        });
+        $('#account').html("<i class=\"fa fa-user-circle\" aria-hidden=\"true\"></i> Mon compte");
+        // User is signed in.
+    }
+
+
+    firebase.auth().onAuthStateChanged(function(userData) {
+        console.log(userData);
+        if (userData) {
+            user = userData;
             name = user.displayName;
             email = user.email;
             photoUrl = user.photoURL;
@@ -89,22 +96,31 @@ $(function () {
             localStorage.setItem('user', uid);
             $('#mainContent').fadeIn();
             $('#signinDiv').hide();
-            $('#mainSubTitle').html('Taches de '+name);
+            $('#mainContent').load('includes/mainTask.html',function () {
+                $('#mainSubTitle').html('Taches de '+name);
+            });
+            $('#account').html("<i class=\"fa fa-user-circle\" aria-hidden=\"true\"></i> Mon compte");
             // User is signed in.
         } else {
+            $('#account').html("");
             // No user is signed in.
         }
     });
-    $('#Deco').click(function () {
-        signOut();
-        localStorage.clear('user');
-        document.location.reload();
-    })
-    function signOut() {
-        firebase.auth().signOut().then(function() {
-            // Sign-out successful.
-        }).catch(function(error) {
-            // An error happened.
+
+    $("#account").click(function () {
+       $("#mainContent").load('includes/profile.html', function () {
+           $('#accountInfo').append("<p>"+firebase.auth().currentUser.displayName+"</p>");
+           $('#accountInfo').append("<p>"+firebase.auth().currentUser.email+"</p>");
+           $('#accountInfo').append("<p>"+firebase.auth().currentUser.photoURL+"</p>");
+           $('#accountInfo').append("<p>"+firebase.auth().currentUser.uid+"</p>");
+           $('#Deco').append("<i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Déconnection");
+       });
+    });
+
+    $('#home').click(function () {
+        $("#mainContent").load('includes/mainTask.html',function () {
+            $('#mainSubTitle').html('Taches de '+name);
         });
-    }
-})
+    });
+
+});

@@ -1,0 +1,21 @@
+<div class="text-light">
+
+    <h1>CouCou</h1>
+    <p id="accountInfo"></p>
+    <p id="Deco"></p>
+</div>
+<script>
+    $('#Deco').click(function () {
+        signOut();
+        localStorage.clear('user');
+        document.location.reload();
+    });
+
+    function signOut() {
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful.
+        }).catch(function(error) {
+            // An error happened.
+        });
+    }
+</script>
