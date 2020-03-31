@@ -111,6 +111,11 @@ $(function () {
        $("#mainContent").load('includes/profile.html', function () {
            $('#profilePseudo').html("Pseudo actuel : <span class='float-right h2'>"+firebase.auth().currentUser.displayName+"</span>");
            $('#profileEmail').html("Email actuel : <span class='float-right h2'>"+firebase.auth().currentUser.email+"</span>");
+           if (firebase.auth().currentUser.emailVerified === false) {
+               $('#profileEmailVerified').html("<span class='float-right text-warning'>Adresse mail non vérifiée.</span>");
+           } else {
+               $('#profileEmailVerified').html("<span class='float-right text-success'>Adresse mail vérifiée.</span>");
+           }
            $('#imgProfile').attr('src',firebase.auth().currentUser.photoURL);
            $('#accountInfo').append("<p>"+firebase.auth().currentUser.uid+"</p>");
            $('#Deco').append("<i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Déconnection");

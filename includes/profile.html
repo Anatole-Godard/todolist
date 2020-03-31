@@ -4,11 +4,14 @@
             <div class="col-md-6">
                 <img src="" id="imgProfile" style="max-width: 25em;" class="img-fluid img-thumbnail rounded-circle mx-auto d-block mb-5" alt="">
                 <fieldset>
-                    <div class=mb-5">
+                    <div class="mb-5">
+                        <p id="profilePseudo"></p>
+                    </div>
+                    <div class="mb-4">
                         <p id="profileEmail"></p>
                     </div>
-                    <div class="my-5">
-                        <p id="profilePseudo"></p>
+                    <div>
+                        <p id="profileEmailVerified"></p>
                     </div>
                 </fieldset>
             </div>
@@ -18,6 +21,7 @@
                 <div class="row w-100">
                     <div class="col-md-8 form-group mx-auto">
                         <input type="text" class="form-control" id="newImg" placeholder="URL de l'avatar">
+                        <p class="text-warning" id="alertImg"></p>
                         <small class="form-text text-muted font-weight-lighter font-italic">ex : https://i.pravatar.cc/350?u=fake@pravatar.fr</small>
                     </div>
                     <div class="col-md-3 form-group mx-auto">
@@ -29,6 +33,7 @@
                 <div class="row w-100">
                     <div class="col-md-8 form-group mx-auto">
                         <input type="email" class="form-control" id="newEmail" aria-describedby="emailHelp" placeholder="Entrer la nouvelle adresse mail">
+                        <p class="text-warning" id="alertMail"></p>
                     </div>
                     <div class="col-md-3 form-group mx-auto">
                         <button class="btn btn-danger" type="button" id="editMail">Changer l'adresse mail</button>
@@ -39,6 +44,7 @@
                 <div class="row w-100">
                     <div class="col-md-8 form-group mx-auto">
                         <input type="text" min="6" class="form-control" id="newPseudo" placeholder="Entrer le nouveau pseudo">
+                        <p class="text-warning" id="alertPseudo"></p>
                     </div>
                     <div class="col-md-3 form-group mx-auto">
                         <button class="btn btn-danger" type="button" id="editPseudo">Changer le pseudo</button>
@@ -47,9 +53,9 @@
 
                 <div class="form-group">
                     <label for="newPassword">Changer de mot de passe</label>
-                    <input type="password" min="6" class="form-control" id="newPassword" placeholder="retaper mot de passe">
-                    <input type="password" min="6" class="form-control" id="newPassword2" placeholder="retaper mot de passe">
-                    <p id="alertSignUp" class="text-danger"></p>
+                    <input type="password" min="6" class="form-control" id="newPassword" placeholder="nouveau mot de passe">
+                    <input type="password" min="6" class="form-control" id="newPassword2" placeholder="retaper le mot de passe">
+                    <p id="alertPassword" class="text-warning"></p>
                     <button class="btn btn-danger" type="button" id="editPassword">Changer</button>
                 </div>
 
@@ -58,58 +64,5 @@
         <p class="float-right btn btn-danger" id="Deco"></p>
     </div>
 </div>
-<script>
-    $('#Deco').click(function () {
-        signOut();
-    });
-
-    $('#editURL').click(function () {
-        let newUrl = $('#newImg').val();
-        firebase.auth().currentUser.updateProfile({
-            photoURL: newUrl
-        }).then(function() { // Quand ca ce passe bien
-            // On clear l'input
-            $('#newImg').val('');
-
-            // Changement des images actuelles
-            $('#imgProfile').attr('src',newUrl);
-            $('#imgNavbar').attr('src',newUrl);
-
-            // Notfication
-            $('#alertNotif').addClass('alert-success')
-                .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Avatar mis a jour.')
-                .slideToggle();
-
-            // après 3s (3000ms)
-            setTimeout(function () {
-                $('#alertNotif').removeClass('alert-success')
-                    .html('')
-                    .fadeOut();
-            },3000);
-            // Update successful.
-        }).catch(function(error) { // Quand un erreur est arrivée
-            // On clear l'input
-            $('#newImg').val('');
-
-            // Notfication
-            $('#alertNotif').addClass('alert-danger')
-                .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez réessayer plus tard !')
-                .slideToggle();
-            // après 3s (3000ms)
-            setTimeout(function () {
-                $('#alertNotif').removeClass('alert-danger')
-                    .html('')
-                    .fadeOut();
-            },3000);
-        });
-    });
-
-    function signOut() {
-        localStorage.clear('user');
-        firebase.auth().signOut().then(function() {
-            // An error happened.
-        });
-        // Sign-out successful.
-        document.location.reload();
-    }
-</script>
+<!--  Chemin depuis index.html car appeler depuis celui-ci  -->
+<script src="includes/profile.js"></script>
