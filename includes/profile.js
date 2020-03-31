@@ -8,6 +8,11 @@ $('#editURL').click(function () {
         firebase.auth().currentUser.updateProfile({
             photoURL: newUrl
         }).then(function() { // Quand ca ce passe bien
+            // on met a jour dans database/user
+            db.collection("user").doc(firebase.auth().currentUser.uid).set({
+                photoURL: newUrl
+            });
+
             // On clear l'input et l'alertImg
             $('#newImg').val('');
             $('#alertImg').html('');
@@ -101,6 +106,10 @@ $('#editPseudo').click(function () {
         firebase.auth().currentUser.updateProfile({
             displayName: newPseudo
         }).then(function() { // Quand ca ce passe bien
+            // on met a jour dans database/user
+            db.collection("user").doc(firebase.auth().currentUser.uid).set({
+                pseudo:newPseudo
+            });
             // On clear l'input et l'alertImg
             $('#newPseudo').val('');
             $('#alertPseudo').html('');
