@@ -1,6 +1,9 @@
 $('#Deco').click(function () {
     signOut();
 });
+
+var db = firebase.firestore();
+
 // Quand on click sur le bouton cahnger d'avatar
 $('#editURL').click(function () {
     let newUrl = $('#newImg').val();
@@ -10,7 +13,8 @@ $('#editURL').click(function () {
         }).then(function() { // Quand ca ce passe bien
             // on met a jour dans database/user
             db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                photoURL: newUrl
+                pseudo:localStorage.getItem('displayName'),
+                photoURL:newUrl
             });
 
             // On clear l'input et l'alertImg
@@ -107,8 +111,10 @@ $('#editPseudo').click(function () {
             displayName: newPseudo
         }).then(function() { // Quand ca ce passe bien
             // on met a jour dans database/user
+            let lastphotoURL = localStorage.getItem('displayName');
             db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                pseudo:newPseudo
+                pseudo:newPseudo,
+                photoURL:lastphotoURL
             });
             // On clear l'input et l'alertImg
             $('#newPseudo').val('');

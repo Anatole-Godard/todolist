@@ -36,11 +36,15 @@ $(function () {
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
                     firebase.auth().signInWithEmailAndPassword(email, password);
                     db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                        nbTask: 0,
+                        nbTask: 0
+                    });
+                    db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').set({
                         pseudo:name,
                         photoURL: "https://i.pravatar.cc/350?u="+email
                     });
                     localStorage.setItem('user', firebase.auth().currentUser.uid);
+                    localStorage.setItem('photoURL', "https://i.pravatar.cc/350?u="+email);
+                    localStorage.setItem('displayName', name);
                     firebase.auth().currentUser.updateProfile({
                         displayName: name,
                         photoURL: "https://i.pravatar.cc/350?u="+email
@@ -64,6 +68,8 @@ $(function () {
         emailVerified = user.emailVerified;
         uid = user.uid;
         localStorage.setItem('user', uid);
+        localStorage.setItem('photoURL', photoUrl);
+        localStorage.setItem('displayName', name);
         $('#mainContent').fadeIn();
         $('#signinDiv').hide();
         $('#mainContent').load('includes/mainTask.html',function () {
@@ -83,6 +89,8 @@ $(function () {
             emailVerified = user.emailVerified;
             uid = user.uid;
             localStorage.setItem('user', uid);
+            localStorage.setItem('photoURL', photoUrl);
+            localStorage.setItem('displayName', name);
             $('#mainContent').fadeIn();
             $('#signinDiv').hide();
             $('#mainContent').load('includes/mainTask.html',function () {
