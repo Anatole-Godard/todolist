@@ -34,37 +34,23 @@ $(function () {
             let db = firebase.firestore();
             if (password2 === password) {
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
-                    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-                        // Handle Errors connection here.
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        // ...
-                    });
+                    firebase.auth().signInWithEmailAndPassword(email, password);
                     db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                        nbTask: 0
+                        nbTask: 0,
+                        pseudo:name,
+                        photoURL: "https://i.pravatar.cc/350?u="+email
                     });
                     localStorage.setItem('user', firebase.auth().currentUser.uid);
                     firebase.auth().currentUser.updateProfile({
                         displayName: name,
                         photoURL: "https://i.pravatar.cc/350?u="+email
-                    }).then(function() {
-                        // Update successful.
-                    }).catch(function(error) {
-                        // An error happened update profile.
                     });
-                }).catch(function(error) {
-                    // Handle Errors inscription here.
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    // ...
                 });
             } else {
                 $('#alertSignUp').html('Mot de passe non identique !');
             }
-
         });
         // Initialize the FirebaseUI Widget using Firebase.
-
         $('#mainContent').hide();
         $('#signinDiv').fadeIn();
     }
@@ -86,7 +72,6 @@ $(function () {
         $('#account').html("<img id='imgNavbar' src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
         // User is signed in.
     }
-
 
     firebase.auth().onAuthStateChanged(function(userData) {
         console.log(userData);
