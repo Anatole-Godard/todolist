@@ -37,6 +37,7 @@
                 <div class="md-form mb-4">
                     <label data-error="wrong" data-success="right" for="category">Catégorie</label>
                     <select name="category" id="category">
+                        <option value="">--Please choose an option--</option>
                         <option value="dog">Dog</option>
                         <option value="cat">Cat</option>
                         <option value="hamster">Hamster</option>
@@ -54,4 +55,31 @@
     </div>
 </div>
 
+<section>
+    <h3>&Agrave; faire</h3>
+      <div><button class="btn btn-default bg-danger rounded text-light" id="read" >Lire</button></div>
+
+<table id="myTableTaskToDo" class="table table-striped">
+   <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Cat&eacute;gorie</th>
+        <th>Date d'échéance</th>
+        <th>Reminder</th>
+        <th>Description</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    <tr>
+    </tr>
+   </thead>
+    <tbody>
+    </tbody>
+</table>
+</section>
+
 <script src="includes/crudtask.js"></script>
+
+
+
+
