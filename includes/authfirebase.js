@@ -31,6 +31,7 @@ $(function () {
             let password2 = $('#signUpPassword2').val();
             let password = $('#signUpPassword').val();
             let name = $('#signUpName').val();
+            let db = firebase.firestore();
             if (password2 === password) {
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
                     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
@@ -39,10 +40,13 @@ $(function () {
                         var errorMessage = error.message;
                         // ...
                     });
+                    db.collection("user").doc(firebase.auth().currentUser.uid).set({
+                        nbTask: 0
+                    });
                     localStorage.setItem('user', firebase.auth().currentUser.uid);
                     firebase.auth().currentUser.updateProfile({
                         displayName: name,
-                        photoURL: "https://i.pravatar.cc/150?u="+email
+                        photoURL: "https://i.pravatar.cc/350?u="+email
                     }).then(function() {
                         // Update successful.
                     }).catch(function(error) {
