@@ -79,7 +79,7 @@ $(function () {
         $('#mainContent').load('includes/mainTask.html',function () {
             $('#mainSubTitle').html('Taches de '+name);
         });
-        $('#account').html("<img src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
+        $('#account').html("<img id='imgNavbar' src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
         // User is signed in.
     }
 
@@ -99,7 +99,7 @@ $(function () {
             $('#mainContent').load('includes/mainTask.html',function () {
                 $('#mainSubTitle').html('Taches de '+name);
             });
-            $('#account').html("<img src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
+            $('#account').html("<img id='imgNavbar' src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
             // User is signed in.
         } else {
             $('#account').html("");

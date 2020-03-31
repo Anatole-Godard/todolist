@@ -67,10 +67,40 @@
         let newUrl = $('#newImg').val();
         firebase.auth().currentUser.updateProfile({
             photoURL: newUrl
-        }).then(function() {
+        }).then(function() { // Quand ca ce passe bien
+            // On clear l'input
+            $('#newImg').val('');
+
+            // Changement des images actuelles
+            $('#imgProfile').attr('src',newUrl);
+            $('#imgNavbar').attr('src',newUrl);
+
+            // Notfication
+            $('#alertNotif').addClass('alert-success')
+                .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Avatar mis a jour.')
+                .slideToggle();
+
+            // après 3s (3000ms)
+            setTimeout(function () {
+                $('#alertNotif').removeClass('alert-success')
+                    .html('')
+                    .fadeOut();
+            },3000);
             // Update successful.
-        }).catch(function(error) {
-            // An error happened update profile.
+        }).catch(function(error) { // Quand un erreur est arrivée
+            // On clear l'input
+            $('#newImg').val('');
+
+            // Notfication
+            $('#alertNotif').addClass('alert-danger')
+                .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez réessayer plus tard !')
+                .slideToggle();
+            // après 3s (3000ms)
+            setTimeout(function () {
+                $('#alertNotif').removeClass('alert-danger')
+                    .html('')
+                    .fadeOut();
+            },3000);
         });
     });
 
