@@ -82,12 +82,12 @@ $('#editMail').click(function () {
             $('#alertNotif').addClass('alert-danger')
                 .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez vous déconnecter puis reconnecter-vous et réessayer !')
                 .slideToggle();
-            // après 3s (3000ms)
+            // après 6s (6000ms)
             setTimeout(function () {
                 $('#alertNotif').removeClass('alert-danger')
                     .html('')
                     .fadeOut();
-            },3000);
+            },6000);
         });
     } else {
         $('#alertMail').html('N\'est pas une adresse mail');
@@ -174,12 +174,12 @@ $('#editPassword').click(function () {
             $('#alertNotif').addClass('alert-danger')
                 .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez vous déconnecter puis reconnecter-vous et réessayer !')
                 .slideToggle();
-            // après 3s (3000ms)
+            // après 6s (6000ms)
             setTimeout(function () {
                 $('#alertNotif').removeClass('alert-danger')
                     .html('')
                     .fadeOut();
-            },3000);
+            },6000);
         });
     } else {
         // On clear l'input
