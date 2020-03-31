@@ -13,7 +13,7 @@ $(document).ready(function () {
         let dateremindertask = $("#dateremindertask").val();
         let categorytask = $("#category").val();
 
-        db.collection("task").collection(idUser).doc("task_1").set({
+        db.collection("user").doc(idUser).collection('tasks').doc('1').set({
             name: nameTask,
             description: descriptiontask,
             date: datetask,
