@@ -1,21 +1,85 @@
-<div class="text-light">
+    <div id="" class="text-light container bg-secondary p-5">
+        <h1 class="text-center">Mon Profil</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="" id="imgProfile" style="max-width: 25em;" class="img-fluid img-thumbnail rounded-circle mx-auto d-block mb-5" alt="">
+                <fieldset>
+                    <div class=mb-5">
+                        <p id="profileEmail"></p>
+                    </div>
+                    <div class="my-5">
+                        <p id="profilePseudo"></p>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-6 p-5">
+                <h2 class="text-center">Editer</h2>
+                <label for="newImg">Avatar</label>
+                <div class="row w-100">
+                    <div class="col-md-8 form-group mx-auto">
+                        <input type="text" class="form-control" id="newImg" placeholder="URL de l'avatar">
+                        <small class="form-text text-muted font-weight-lighter font-italic">ex : https://i.pravatar.cc/350?u=fake@pravatar.fr</small>
+                    </div>
+                    <div class="col-md-3 form-group mx-auto">
+                        <button class="btn btn-danger" type="button" id="editURL">Changer l'avatar</button>
+                    </div>
+                </div>
 
-    <h1>CouCou</h1>
-    <p id="accountInfo"></p>
-    <p id="Deco"></p>
+                <label for="newEmail">Email</label>
+                <div class="row w-100">
+                    <div class="col-md-8 form-group mx-auto">
+                        <input type="email" class="form-control" id="newEmail" aria-describedby="emailHelp" placeholder="Entrer la nouvelle adresse mail">
+                    </div>
+                    <div class="col-md-3 form-group mx-auto">
+                        <button class="btn btn-danger" type="button" id="editMail">Changer l'adresse mail</button>
+                    </div>
+                </div>
+
+                <label for="newPseudo">Pseudo</label>
+                <div class="row w-100">
+                    <div class="col-md-8 form-group mx-auto">
+                        <input type="text" min="6" class="form-control" id="newPseudo" placeholder="Entrer le nouveau pseudo">
+                    </div>
+                    <div class="col-md-3 form-group mx-auto">
+                        <button class="btn btn-danger" type="button" id="editPseudo">Changer le pseudo</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Changer de mot de passe</label>
+                    <input type="password" min="6" class="form-control" id="newPassword" placeholder="retaper mot de passe">
+                    <input type="password" min="6" class="form-control" id="newPassword2" placeholder="retaper mot de passe">
+                    <p id="alertSignUp" class="text-danger"></p>
+                    <button class="btn btn-danger" type="button" id="editPassword">Changer</button>
+                </div>
+
+            </div>
+        </div>
+        <p class="float-right btn btn-danger" id="Deco"></p>
+    </div>
 </div>
 <script>
     $('#Deco').click(function () {
         signOut();
-        localStorage.clear('user');
-        document.location.reload();
+    });
+
+    $('#editURL').click(function () {
+        let newUrl = $('#newImg').val();
+        firebase.auth().currentUser.updateProfile({
+            photoURL: newUrl
+        }).then(function() {
+            // Update successful.
+        }).catch(function(error) {
+            // An error happened update profile.
+        });
     });
 
     function signOut() {
+        localStorage.clear('user');
         firebase.auth().signOut().then(function() {
-            // Sign-out successful.
-        }).catch(function(error) {
             // An error happened.
         });
+        // Sign-out successful.
+        document.location.reload();
     }
 </script>

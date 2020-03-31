@@ -42,7 +42,7 @@ $(function () {
                     localStorage.setItem('user', firebase.auth().currentUser.uid);
                     firebase.auth().currentUser.updateProfile({
                         displayName: name,
-                        photoURL: "https://example.com/jane-q-user/profile.jpg"
+                        photoURL: "https://i.pravatar.cc/150?u="+email
                     }).then(function() {
                         // Update successful.
                     }).catch(function(error) {
@@ -79,7 +79,7 @@ $(function () {
         $('#mainContent').load('includes/mainTask.html',function () {
             $('#mainSubTitle').html('Taches de '+name);
         });
-        $('#account').html("<i class=\"fa fa-user-circle\" aria-hidden=\"true\"></i> Mon compte");
+        $('#account').html("<img src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
         // User is signed in.
     }
 
@@ -99,7 +99,7 @@ $(function () {
             $('#mainContent').load('includes/mainTask.html',function () {
                 $('#mainSubTitle').html('Taches de '+name);
             });
-            $('#account').html("<i class=\"fa fa-user-circle\" aria-hidden=\"true\"></i> Mon compte");
+            $('#account').html("<img src=\""+user.photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle mr-2\" alt=\"\"> Mon compte");
             // User is signed in.
         } else {
             $('#account').html("");
@@ -109,9 +109,9 @@ $(function () {
 
     $("#account").click(function () {
        $("#mainContent").load('includes/profile.html', function () {
-           $('#accountInfo').append("<p>"+firebase.auth().currentUser.displayName+"</p>");
-           $('#accountInfo').append("<p>"+firebase.auth().currentUser.email+"</p>");
-           $('#accountInfo').append("<p>"+firebase.auth().currentUser.photoURL+"</p>");
+           $('#profilePseudo').html("Pseudo actuel : <span class='float-right h2'>"+firebase.auth().currentUser.displayName+"</span>");
+           $('#profileEmail').html("Email actuel : <span class='float-right h2'>"+firebase.auth().currentUser.email+"</span>");
+           $('#imgProfile').attr('src',firebase.auth().currentUser.photoURL);
            $('#accountInfo').append("<p>"+firebase.auth().currentUser.uid+"</p>");
            $('#Deco').append("<i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Déconnection");
        });
