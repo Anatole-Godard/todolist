@@ -85,6 +85,7 @@ $(document).ready(function () {
                 $("#aFaire").append(card) ;
                 $("#cardTID_"+doc.id).draggable();
             });
+            $( ".taskBlock" ).draggable({ revert: true });
         });
 
         //LECTURE ET AFFICHAGE des taches en cours
@@ -103,6 +104,7 @@ $(document).ready(function () {
             console.log(card);
             $("#enCour").append(card);
         });
+        $( ".taskBlock" ).draggable({ revert: true });
     });
     //LECTURE ET AFFICHAGE des taches terminées
     // récupère les valeurs données par l'utilisateur lors de la création de la tâche
@@ -120,6 +122,7 @@ $(document).ready(function () {
             console.log(card);
             $("#terminer").append(card);
         });
+        $( ".taskBlock" ).draggable({ revert: true });
     });
 
 

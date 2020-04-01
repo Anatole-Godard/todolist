@@ -234,3 +234,24 @@ function signOut() {
         document.location.reload();
     });
 }
+
+// draggable le user
+$('.user').draggable({revert:true});
+$( "#myColab" ).droppable({
+    classes: {
+        "ui-droppable-hover": "bg-success"
+    },
+    drop: function( event, ui ) {
+        // Notfication
+        $('#alertNotif').addClass('alert-success')
+            .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Collaborateur ajouté.')
+            .slideToggle();
+
+        // après 3s (3000ms)
+        setTimeout(function () {
+            $('#alertNotif').removeClass('alert-success')
+                .html('')
+                .fadeOut();
+        },3000);
+    }
+});
