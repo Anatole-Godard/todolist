@@ -49,24 +49,76 @@ $(document).ready(function () {
                 });
         })
     });
-    $("#read").click(function() {
 
+   // $("#read").click(function() {
+        var card ;
+        var cardbody ;
+        var cardfooter =
+        '<div class="card-footer">' +
+             '<div class="row">' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                 '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+            '</div>' +
+        '</div>' ;
+
+        //LECTURE ET AFFICHAGE TACHES A FAIRE
+        // récupère les valeurs données par l'utilisateur lors de la création de la tâche
         db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                //   var taskDateReminder = doc.data().datereminder ;
-                var ligne = '<tr>' +
-                    '<td>'+doc.id+'</td>' +
-                    '<td>'+doc.data().name +'</td>' +
-                    '<td>'+doc.data().category+'</td>' +
-                    '<td>'+doc.data().date+'</td>' +
-                    '<td>'+doc.data().datereminder+'</td>' +
-                    '<td>'+doc.data().description+'</td>' +
-                    '<td><button class="btn btn-default bg-danger rounded text-light" id="btnUpdate">Modifier</button></td>' +
-                    '<td><button class="btn btn-default bg-danger rounded text-light" id="delete">Supprimer</button></td>' +
-                    '</tr>' ;
-                $('#myTableTaskToDo > tbody:last-child').append(ligne);
-                // console.log(`${doc.id} => ${doc.data().category}`);
+                //  Affichage des données
+            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
+                '<div class="card-body">' +
+                '<h4 class="card-title">'+doc.data().name +'</h4>' +
+                '<p class="card-text">'+doc.data().description+'</p>' +
+                '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
+                '</div>';
+
+            card = cardbody+cardfooter ;
+                console.log(card);
+                $("#aFaire").append(card) ;
+                $("#cardTID_"+doc.id).draggable();
             });
+        });
+
+        //LECTURE ET AFFICHAGE des taches en cours
+    // récupère les valeurs données par l'utilisateur lors de la création de la tâche
+    db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            //  Affichage des données
+            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
+                '<div class="card-body">' +
+                '<h4 class="card-title">'+doc.data().name +'</h4>' +
+                '<p class="card-text">'+doc.data().description+'</p>' +
+                '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
+                '</div>';
+
+            card = cardbody+cardfooter ;
+            console.log(card);
+            $("#enCour").append(card);
+        });
+    });
+    //LECTURE ET AFFICHAGE des taches terminées
+    // récupère les valeurs données par l'utilisateur lors de la création de la tâche
+    db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            //  Affichage des données
+            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
+                '<div class="card-body">' +
+                '<h4 class="card-title">'+doc.data().name +'</h4>' +
+                '<p class="card-text">'+doc.data().description+'</p>' +
+                '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
+                '</div>';
+
+            card = cardbody+cardfooter ;
+            console.log(card);
+            $("#terminer").append(card);
         });
     });
 
@@ -74,7 +126,7 @@ $(document).ready(function () {
 
     ;
     $("#update").click(function() {
-        db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+        db.collection("user").doc(idUser).collection('tasks').get().orderBy("ID").then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
 
                 var taskID = doc.id;
@@ -93,7 +145,8 @@ $(document).ready(function () {
                     '<td><button class="btn btn-default bg-danger rounded text-light" id="update" >Modifier</button></td>' +
                     '<td><button class="btn btn-default bg-danger rounded text-light" id="delete" >Supprimer</button></td>' +
                     '</tr>' ;
-                $('#myTableTaskToDo > tbody:last-child').append(ligne);
+
+
                 // console.log(`${doc.id} => ${doc.data().category}`);
             });
         });
