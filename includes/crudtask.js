@@ -194,11 +194,6 @@ $(document).ready(function () {
                         // on rend draggable l'ajout dans la colonne
                         $(".taskBlock").draggable({revert: true});
                     },500);
-                    //recharchement de la page
-                    // $("#mainContent").load('includes/mainTask.html', function () {
-                    //     // on injecte le titre de la page
-                    //     $('#mainSubTitle').html('Taches de ' + name);
-                    // });
                 })
                 .catch(function (error) {
                     //log les erreurs dans la console
@@ -249,11 +244,6 @@ $(document).ready(function () {
                         // on rend draggable l'ajout dans la colonne
                         $(".taskBlock").draggable({revert: true});
                     },500);
-                    //recharchement de la page
-                    // $("#mainContent").load('includes/mainTask.html', function () {
-                    //     // on injecte le titre de la page
-                    //     $('#mainSubTitle').html('Taches de ' + name);
-                    // });
                 })
                 .catch(function (error) {
                     //log les erreurs dans la console
@@ -304,11 +294,6 @@ $(document).ready(function () {
                         // on rend draggable l'ajout dans la colonne
                         $(".taskBlock").draggable({revert: true});
                     },500);
-                    //recharchement de la page
-                    // $("#mainContent").load('includes/mainTask.html', function () {
-                    //     // on injecte le titre de la page
-                    //     $('#mainSubTitle').html('Taches de ' + name);
-                    // });
                 })
                 .catch(function (error) {
                     //log les erreurs dans la console
