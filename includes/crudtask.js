@@ -50,9 +50,9 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             //  Ajout de la carte à la Div "aFaire"
             $(taskdiv).append(card);
         });
+        //Permet de rendre la carte draggable
+        $(".taskBlock").draggable({revert: true});
     });
-    //Permet de rendre la carte draggable
-    $(".taskBlock").draggable({revert: true});
     return true;
 }
 
