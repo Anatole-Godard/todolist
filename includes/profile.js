@@ -246,15 +246,27 @@ db.collection("user").get().then((querySnapshot) => {
 
     // Sur chaque ID d'utilisateur
     userIdList.forEach(idUser => {
+        let inMyuCollab;
+        console.log(localStorage.getItem('myCollab'));
+        if (localStorage.getItem('myCollab') !== null){
+            if (localStorage.getItem('myCollab').includes(idUser)){
+                inMyuCollab = 0;
+            } else {
+                inMyuCollab = 1;
+            }
+
+        } else {
+            inMyuCollab = 1;
+        }
         // Si ce n'est pas l'utilisateur connecté
-        if (idUser !== localStorage.getItem('user')) {
+        if (idUser !== localStorage.getItem('user') && inMyuCollab === 1) {
             // On récupère les données
             db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
                 let photoURL = querySnapshot.data().photoURL;
                 let pseudo = querySnapshot.data().pseudo;
 
                 // On définie l'element html
-                cardUser = '<div class="user my-1 col-md-12 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                let cardUser = '<div id="'+idUser+'" class="user my-1 col-md-12 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
                     '<div class="col-2 ml-3 p-0 pt-1">' +
                     '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                     '</div>' +
@@ -268,6 +280,28 @@ db.collection("user").get().then((querySnapshot) => {
                 // rendre draggable l'element ajouté
                 $( ".user" ).draggable({ revert: true });
             });
+        } else {
+            if (idUser !== localStorage.getItem('user')){
+                db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                    let photoURL = querySnapshot.data().photoURL;
+                    let pseudo = querySnapshot.data().pseudo;
+
+                    // On définie l'element html
+                    let cardUser = '<div id="'+idUser+'" class="my-1 col-md-12 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                        '<div class="col-2 ml-3 p-0 pt-1">' +
+                        '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                        '</div>' +
+                        '<div class="col-8">' +
+                        '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                        '</div>' +
+                        '</div>';
+
+                    // on injecte l'element html a la liste des utilisateurs
+                    $("#myColab").append(cardUser);
+                    // rendre draggable l'element ajouté
+                    $( ".user" ).draggable({ revert: true });
+                });
+            }
         }
     })
 });
@@ -278,6 +312,35 @@ $( "#myColab" ).droppable({
         "ui-droppable-hover": "bg-success"
     },
     drop: function( event, ui ) {
+        // on recupere l'id de l'element 'dropé' qui correspond a l'id du user
+        let idNewCollab= ui.draggable.prop('id');
+        console.log(idNewCollab);
+
+        let newCard = $('#'+idNewCollab);
+        $('#'+idNewCollab).remove();
+
+        $('#myColab').append(newCard);
+        // liste des collab
+        let collabList = [];
+
+        // on ajoute l'id du nouveau collaborateur
+        collabList.push(idNewCollab);
+
+        // Si la variable est renseigné dans le localStorage
+        if (localStorage.getItem('myCollab') !== null){
+            collabList.push(localStorage.getItem('myCollab'));
+        }
+
+        // On ajoute en database
+        db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').set({
+            pseudo:localStorage.getItem('displayName'),
+            photoURL:localStorage.getItem('photoURL'),
+            myCollab:collabList
+        });
+
+        // On ajoute/update dans le localstorage
+        localStorage.setItem('myCollab',collabList);
+
         // Notfication
         $('#alertNotif').addClass('alert-success')
             .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Collaborateur ajouté.')

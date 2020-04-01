@@ -12,6 +12,7 @@ $(function () {
     };
     // Initialisation Firebase
     firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
 
     // si la variable user du local storage est null
     if (localStorage.getItem('user') === null){
@@ -120,7 +121,18 @@ $(function () {
             localStorage.setItem('user', uid);
             localStorage.setItem('photoURL', photoUrl);
             localStorage.setItem('displayName', name);
+            db.collection("user").doc(uid).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                let arrayCollab = querySnapshot.data().myCollab;
+                console.log(arrayCollab);
+                if (arrayCollab !== undefined) {
+                    let listCollab = [];
 
+                    for (let i = 0;i<arrayCollab.length;i++){
+                        listCollab.push(arrayCollab[i]);
+                    }
+                    localStorage.setItem('myCollab',listCollab);
+                }
+            });
             // on fait apparaitre la div de contenu
             $('#mainContent').fadeIn();
 
