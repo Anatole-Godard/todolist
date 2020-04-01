@@ -70,7 +70,7 @@ $(document).ready(function () {
 
         //LECTURE ET AFFICHAGE TACHES A FAIRE
         // récupère les valeurs données par l'utilisateur lors de la création de la tâche
-        db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+        db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "à faire").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 //  Affichage des données
             cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
@@ -90,7 +90,7 @@ $(document).ready(function () {
 
         //LECTURE ET AFFICHAGE des taches en cours
     // récupère les valeurs données par l'utilisateur lors de la création de la tâche
-    db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "en cours").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             //  Affichage des données
             cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
@@ -108,7 +108,7 @@ $(document).ready(function () {
     });
     //LECTURE ET AFFICHAGE des taches terminées
     // récupère les valeurs données par l'utilisateur lors de la création de la tâche
-    db.collection("user").doc(idUser).collection('tasks').get().then((querySnapshot) => {
+    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "terminé").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             //  Affichage des données
             cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
@@ -132,22 +132,6 @@ $(document).ready(function () {
         db.collection("user").doc(idUser).collection('tasks').get().orderBy("ID").then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
 
-                var taskID = doc.id;
-                var taskName = doc.data().name ;
-                var taskCategory = doc.data().category;
-                var taskDateEcheance = doc.data().date;
-                //   var taskDateReminder = doc.data().datereminder ;
-                var taskDescription = doc.data().description ;
-                var ligne = '<tr>' +
-                    '<td>'+taskID+'</td>' +
-                    '<td>'+taskName+'</td>' +
-                    '<td>'+taskCategory+'</td>' +
-                    '<td>'+taskDateEcheance+'</td>' +
-                    '<td>'+doc.data().datereminder+'</td>' +
-                    '<td>'+taskDescription+'</td>' +
-                    '<td><button class="btn btn-default bg-danger rounded text-light" id="update" >Modifier</button></td>' +
-                    '<td><button class="btn btn-default bg-danger rounded text-light" id="delete" >Supprimer</button></td>' +
-                    '</tr>' ;
 
 
                 // console.log(`${doc.id} => ${doc.data().category}`);
