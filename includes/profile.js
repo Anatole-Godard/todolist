@@ -1,17 +1,26 @@
+// quand on click sur le boutton de deconnection
 $('#Deco').click(function () {
     signOut();
 });
+
+// Connection a la database 'firebase'
+var db = firebase.firestore();
+
 // Quand on click sur le bouton cahnger d'avatar
 $('#editURL').click(function () {
     let newUrl = $('#newImg').val();
+    // si l'input n'est pas vide
     if (newUrl !== '') {
         firebase.auth().currentUser.updateProfile({
             photoURL: newUrl
         }).then(function() { // Quand ca ce passe bien
             // on met a jour dans database/user
-            db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                photoURL: newUrl
+            db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').set({
+                pseudo:localStorage.getItem('displayName'),
+                photoURL:newUrl
             });
+
+            localStorage.setItem('photoURL',newUrl);
 
             // On clear l'input et l'alertImg
             $('#newImg').val('');
@@ -48,7 +57,7 @@ $('#editURL').click(function () {
                     .fadeOut();
             },3000);
         });
-    } else {
+    } else { // si l'input est vide
         $('#alertImg').html('Veuillez saisir une URL !!');
     }
 });
@@ -78,7 +87,7 @@ $('#editMail').click(function () {
                     .html('')
                     .fadeOut();
             },3000);
-            // Update successful.
+            // Update reussi.
         }).catch(function(error) { // Quand un erreur est arrivée
             // On clear l'input
             $('#newEmail').val('');
@@ -87,6 +96,7 @@ $('#editMail').click(function () {
             $('#alertNotif').addClass('alert-danger')
                 .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez vous déconnecter puis reconnecter-vous et réessayer !')
                 .slideToggle();
+
             // après 6s (6000ms)
             setTimeout(function () {
                 $('#alertNotif').removeClass('alert-danger')
@@ -107,9 +117,14 @@ $('#editPseudo').click(function () {
             displayName: newPseudo
         }).then(function() { // Quand ca ce passe bien
             // on met a jour dans database/user
-            db.collection("user").doc(firebase.auth().currentUser.uid).set({
-                pseudo:newPseudo
+            let lastphotoURL = localStorage.getItem('photoURL');
+            db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').set({
+                pseudo:newPseudo,
+                photoURL:lastphotoURL
             });
+
+            localStorage.setItem('displayName',newPseudo);
+
             // On clear l'input et l'alertImg
             $('#newPseudo').val('');
             $('#alertPseudo').html('');
@@ -128,7 +143,7 @@ $('#editPseudo').click(function () {
                     .html('')
                     .fadeOut();
             },3000);
-            // Update successful.
+            // Update reussi.
         }).catch(function(error) { // Quand un erreur est arrivée
             // On clear l'input
             $('#newPseudo').val('');
@@ -137,6 +152,7 @@ $('#editPseudo').click(function () {
             $('#alertNotif').addClass('alert-danger')
                 .html('<i class="fa fa-warning fa-2x" aria-hidden="true"></i> Une erreur est survenue, veuillez réessayer plus tard !')
                 .slideToggle();
+
             // après 3s (3000ms)
             setTimeout(function () {
                 $('#alertNotif').removeClass('alert-danger')
@@ -157,6 +173,7 @@ $('#editPassword').click(function () {
     if (newPassword === newPassword2) {
         firebase.auth().currentUser.updatePassword(newPassword)
             .then(function() { // Quand ca ce passe bien
+
                 // On clear l'input et l'alertImg
                 $('#newPassword').val('');
                 $('#newPassword2').val('');
@@ -173,7 +190,7 @@ $('#editPassword').click(function () {
                         .html('')
                         .fadeOut();
                 },3000);
-                // Update successful.
+                // Update reussi.
             }).catch(function(error) { // Quand un erreur est arrivée
             // On clear l'input
             $('#newPassword').val('');
@@ -207,10 +224,13 @@ function isEmail(email) {
 
 // fonction pour ce deconnecter
 function signOut() {
+    // on supprimer les varibles du localstorage
     localStorage.clear('user');
+    localStorage.clear('photoURL');
+    localStorage.clear('displayName');
+
     firebase.auth().signOut().then(function() {
-        // An error happened.
+        // Sign-out reussi.
+        document.location.reload();
     });
-    // Sign-out successful.
-    document.location.reload();
 }
