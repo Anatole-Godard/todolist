@@ -13,7 +13,7 @@
        <!--
 
         <div class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">
-            <div class="card-body">
+            <div class="card-body " data-toggle="modal" data-target="#modalUpdate" idTask="5">
                 <h4 class="card-title">Titre de la tache</h4>
                 <p class="card-text">Description de la tache</p>
                 <p class="card-text float-right"><small>01/01/2020</small></p>
@@ -42,7 +42,6 @@
 
     <div id="terminer" class="col-md-3 mx-3">
         <h2 class="text-center mb-5">Terminé</h2>
-
 
     </div>
 </div>
@@ -139,6 +138,18 @@
                         <option value="goldfish">Goldfish</option>
                     </select>
                 </div>
+
+                <div class="modal-body mx-3 text-light">
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="statementUpdate">Statut</label>
+                        <select name="category" id="statementUpdate">
+                            <option value="">--Please choose an option--</option>
+                            <option value="à faire">à faire</option>
+                            <option value="en cours">en cours</option>
+                            <option value="terminé">terminé</option>
+                            <option value="archivé">Archivé</option>
+                        </select>
+                    </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-center">
