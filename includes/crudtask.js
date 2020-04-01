@@ -1,6 +1,6 @@
 //READ
 
-//CreateCardForTask(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
+//           readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
 //
 //description :
 //
@@ -15,7 +15,7 @@
 3 - db[Object], la BDD source. (Firebase object)
 4 - idUser[String], l'ID de l'utilisateur dans la BDD
 */
-function createCardForTask(tasktype,taskdiv, db, idUser) {
+function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     let card;
     let cardbody;
     let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
@@ -138,9 +138,9 @@ $(document).ready(function () {
 
 
     //Execution du templates pour les taches ( à faire, En cours, Terminé).
-       createCardForTask("à faire", "#aFaire", db, idUser);
-    createCardForTask("en cours", "#enCour", db, idUser);
-    createCardForTask("terminé", "#terminer", db, idUser);
+    readTaskCreateCard("à faire", "#aFaire", db, idUser);
+    readTaskCreateCard("en cours", "#enCour", db, idUser);
+    readTaskCreateCard("terminé", "#terminer", db, idUser);
 
 
 
