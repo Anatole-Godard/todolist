@@ -1,9 +1,92 @@
-<div class="text-center text-light" id="">
+<div class="text-center text-light mb-5" id="">
     <h1 id="mainSubTitle"></h1>
 </div>
-<div class="float-right bg-danger rounded-circle text-center pt-2" data-toggle="modal"
-     data-target="#modalLoginForm" style="width: 3em;height: 3em;color: white;z-index: 10"><i class="fa fa-plus fa-2x mx-auto"
-                                                                                  aria-hidden="true"></i></div>
+
+<div class="float-right bg-danger rounded-circle text-center pt-2" data-toggle="modal" data-target="#modalLoginForm" style="width: 3em;height: 3em;color: white;z-index: 10">
+    <i class="fa fa-plus fa-2x mx-auto" aria-hidden="true"></i>
+</div>
+
+
+<div id="taskContent" class="row text-light">
+    <div id="aFaire" class="col-md-3 mx-3">
+        <h2 class="text-center mb-5">A Faire</h2>
+
+        <div class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+                <h4 class="card-title">Titre de la tache</h4>
+                <p class="card-text">Description de la tache</p>
+                <p class="card-text float-right"><small>01/01/2020</small></p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="mx-auto">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="enCour" class="col-md-3 mx-3">
+        <h2 class="text-center mb-5">En cours</h2>
+
+        <div class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+                <h4 class="card-title">Titre de la tache</h4>
+                <p class="card-text">Description de la tache</p>
+                <p class="card-text float-right"><small>01/01/2020</small></p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="mx-auto">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="terminer" class="col-md-3 mx-3">
+        <h2 class="text-center mb-5">Terminé</h2>
+
+        <div class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">
+            <span class="badge badge-pill badge-warning float-right" style="position: absolute;top: 1em;right: 1em;width: 2em;"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+            <div class="card-body">
+                <h4 class="card-title">Titre de la tache</h4>
+                <p class="card-text">Description de la tache</p>
+                <p class="card-text float-right"><small>01/01/2020</small></p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="mx-auto">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="mx-auto">
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -54,7 +137,9 @@
         </div>
     </div>
 </div>
-
+<script>
+    $( ".taskBlock" ).draggable({ revert: true });
+</script>
 <section>
     <h3>&Agrave; faire</h3>
       <div><button class="btn btn-default bg-danger rounded text-light" id="read" >Lire</button></div>
