@@ -123,14 +123,15 @@ $(function () {
             localStorage.setItem('displayName', name);
             db.collection("user").doc(uid).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
                 let arrayCollab = querySnapshot.data().myCollab;
-                console.log(arrayCollab);
                 if (arrayCollab !== undefined) {
-                    let listCollab = [];
+                    if (arrayCollab.length > 0) {
+                        let listCollab = [];
 
-                    for (let i = 0;i<arrayCollab.length;i++){
-                        listCollab.push(arrayCollab[i]);
+                        for (let i = 0;i<arrayCollab.length;i++){
+                            listCollab.push(arrayCollab[i]);
+                        }
+                        localStorage.setItem('myCollab',listCollab);
                     }
-                    localStorage.setItem('myCollab',listCollab);
                 }
             });
             // on fait apparaitre la div de contenu

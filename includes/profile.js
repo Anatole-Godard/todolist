@@ -228,6 +228,7 @@ function signOut() {
     localStorage.clear('user');
     localStorage.clear('photoURL');
     localStorage.clear('displayName');
+    localStorage.clear('myCollab');
 
     firebase.auth().signOut().then(function() {
         // Sign-out reussi.
@@ -247,8 +248,9 @@ db.collection("user").get().then((querySnapshot) => {
     // Sur chaque ID d'utilisateur
     userIdList.forEach(idUser => {
         let inMyuCollab;
-        console.log(localStorage.getItem('myCollab'));
+        // Si on a la variable dans le localstorage
         if (localStorage.getItem('myCollab') !== null){
+            // Si l'iduser est dans la variable
             if (localStorage.getItem('myCollab').includes(idUser)){
                 inMyuCollab = 0;
             } else {
@@ -258,7 +260,7 @@ db.collection("user").get().then((querySnapshot) => {
         } else {
             inMyuCollab = 1;
         }
-        // Si ce n'est pas l'utilisateur connecté
+        // Si ce n'est pas l'utilisateur connecté et que si il n'est pas dans le localstorage
         if (idUser !== localStorage.getItem('user') && inMyuCollab === 1) {
             // On récupère les données
             db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
@@ -280,8 +282,10 @@ db.collection("user").get().then((querySnapshot) => {
                 // rendre draggable l'element ajouté
                 $( ".user" ).draggable({ revert: true });
             });
-        } else {
+        } else { // si il est dans le localstorage
+            // Si l'iduser est different que celle connecté
             if (idUser !== localStorage.getItem('user')){
+                // On va chercher les infos de l'iduser
                 db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
                     let photoURL = querySnapshot.data().photoURL;
                     let pseudo = querySnapshot.data().pseudo;
@@ -291,19 +295,68 @@ db.collection("user").get().then((querySnapshot) => {
                         '<div class="col-2 ml-3 p-0 pt-1">' +
                         '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                         '</div>' +
-                        '<div class="col-8">' +
-                        '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                        '<div class="col-9">' +
+                        '<p class="text-primary mb-2 pt-2">'+pseudo+'<i class="removeColabo text-danger fa mt-1 float-right fa-trash-o" aria-hidden="true"></i></p>' +
                         '</div>' +
                         '</div>';
 
                     // on injecte l'element html a la liste des utilisateurs
                     $("#myColab").append(cardUser);
-                    // rendre draggable l'element ajouté
-                    $( ".user" ).draggable({ revert: true });
+                    // function pour supprimer un collaborateur
+                    $('.removeColabo').click(function () {
+                        // on recup l'id de l'utilisateur
+                        let idDelete = $(this).parent().parent().parent()[0].id;
+                        let uid = localStorage.getItem('user');
+
+                        // on recup nos donnée
+                        db.collection("user").doc(uid).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                            let arrayCollab = querySnapshot.data().myCollab;
+
+                            // si on a le champ myCollab
+                            if (arrayCollab !== undefined) {
+                                for (let i = 0;i<arrayCollab.length;i++){
+                                    if (arrayCollab[i] === idDelete){
+                                        // on supprime l'id de notre tableau
+                                        arrayCollab.splice(i,1);
+                                    }
+                                }
+
+                                // si le tableau a aucune données
+                                if (arrayCollab.length > 0){
+                                    localStorage.setItem('myCollab',arrayCollab);
+                                } else {
+                                    localStorage.removeItem('myCollab');
+                                }
+
+                                // on met a jours les données en database
+                                db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').update({
+                                    myCollab:arrayCollab
+                                }).then(function () {
+                                    // on recupere la div
+                                    let newCard = $('#'+idDelete);
+
+                                    // on efface la div
+                                    $('#'+idDelete).remove();
+
+                                    // on injecte la nouvelle
+                                    $('#listUser').append(newCard);
+
+                                    // on ajoute la class user
+                                    $('#'+idDelete).addClass('user');
+
+                                    // on effacer la poubelle de la div
+                                    $('#'+idDelete).find('i').remove();
+
+                                    // on rend draggable la class user
+                                    $( ".user" ).draggable({ revert: true });
+                                });
+                            }
+                        });
+                    });
                 });
             }
         }
-    })
+    });
 });
 
 // rendre myColab droppable
@@ -320,6 +373,60 @@ $( "#myColab" ).droppable({
         $('#'+idNewCollab).remove();
 
         $('#myColab').append(newCard);
+        $('#'+idNewCollab).removeClass('user');
+        $('#'+idNewCollab).find('p').append('<i class="removeColabo text-danger fa mt-1 float-right fa-trash-o" aria-hidden="true"></i>');
+        // on initialise event pour la suppression
+        $('.removeColabo').click(function () {
+            // on recup l'id de l'utilisateur
+            let idDelete = $(this).parent().parent().parent()[0].id;
+            let uid = localStorage.getItem('user');
+
+            // on recup nos donnée
+            db.collection("user").doc(uid).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                let arrayCollab = querySnapshot.data().myCollab;
+
+                // si on a le champ myCollab
+                if (arrayCollab !== undefined) {
+                    for (let i = 0;i<arrayCollab.length;i++){
+                        if (arrayCollab[i] === idDelete){
+                            // on supprime l'id de notre tableau
+                            arrayCollab.splice(i,1);
+                        }
+                    }
+
+                    // si le tableau a aucune données
+                    if (arrayCollab.length > 0){
+                        localStorage.setItem('myCollab',arrayCollab);
+                    } else {
+                        localStorage.removeItem('myCollab');
+                    }
+
+                    // on met a jours les données en database
+                    db.collection("user").doc(firebase.auth().currentUser.uid).collection("userInfo").doc('userInfo').update({
+                        myCollab:arrayCollab
+                    }).then(function () {
+                        // on recupere la div
+                        let newCard = $('#'+idDelete);
+
+                        // on efface la div
+                        $('#'+idDelete).remove();
+
+                        // on injecte la nouvelle
+                        $('#listUser').append(newCard);
+
+                        // on ajoute la class user
+                        $('#'+idDelete).addClass('user');
+
+                        // on effacer la poubelle de la div
+                        $('#'+idDelete).find('i').remove();
+
+                        // on rend draggable la class user
+                        $( ".user" ).draggable({ revert: true });
+                    });
+                }
+            });
+        });
+
         // liste des collab
         let collabList = [];
 
