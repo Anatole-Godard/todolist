@@ -349,6 +349,18 @@ db.collection("user").get().then((querySnapshot) => {
 
                                     // on rend draggable la class user
                                     $( ".user" ).draggable({ revert: true });
+
+                                    // Notfication
+                                    $('#alertNotif').addClass('alert-success')
+                                        .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Collaborateur supprimé.')
+                                        .slideToggle();
+
+                                    // après 3s (3000ms)
+                                    setTimeout(function () {
+                                        $('#alertNotif').removeClass('alert-success')
+                                            .html('')
+                                            .fadeOut();
+                                    },3000);
                                 });
                             }
                         });
@@ -422,6 +434,18 @@ $( "#myColab" ).droppable({
 
                         // on rend draggable la class user
                         $( ".user" ).draggable({ revert: true });
+
+                        // Notfication
+                        $('#alertNotif').addClass('alert-success')
+                            .html('<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i> Collaborateur supprimé.')
+                            .slideToggle();
+
+                        // après 3s (3000ms)
+                        setTimeout(function () {
+                            $('#alertNotif').removeClass('alert-success')
+                                .html('')
+                                .fadeOut();
+                        },3000);
                     });
                 }
             });
