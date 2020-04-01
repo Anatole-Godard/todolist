@@ -130,7 +130,6 @@ $(document).ready(function () {
 
 
 
-    ;
     $("#update").click(function() {
         db.collection("user").doc(idUser).collection('tasks').get().orderBy("ID").then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
