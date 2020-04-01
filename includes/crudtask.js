@@ -1,3 +1,15 @@
+function deletetask(taskid) {
+    var tid = String(taskid);
+    // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
+    var idUser = localStorage.getItem('user');
+    var db = firebase.firestore();
+    db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: "supprimé"}).then(function() {
+        console.log("prout") ;
+    $("#cardTID_"+taskid).remove();
+    }) ;
+  //  console.log(taskid);
+}
+
 $(document).ready(function () {
     // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
     var idUser = localStorage.getItem('user');
@@ -6,7 +18,6 @@ $(document).ready(function () {
 
     // ajoute un event sur le bouton pour créer une tâche
     $("#create").click(function () {
-
         //récupère le Id de la dernière tâche créé par l'utilisateur connécté
         db.collection("user").doc(idUser).get().then(function (doc) {
             console.log(doc.data().nbTask + 1);
@@ -27,8 +38,6 @@ $(document).ready(function () {
                 date: datetask,
                 datereminder: dateremindertask,
                 category: categorytask,
-                statement: 'à faire',
-                creationdate: now
             })
                 .then(function (docRef) {
                     //une fois créée on incrémente en base le champ qui compte le nombre de tâches créé par l'utilisateur
@@ -53,23 +62,11 @@ $(document).ready(function () {
         })
     });
 
-   // $("#read").click(function() {
+
+
+//READ
         var card ;
         var cardbody ;
-        var cardfooter =
-        '<div class="card-footer">' +
-             '<div class="row">' +
-                '<div class="mx-auto">' +
-                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
-                 '</div>' +
-                '<div class="mx-auto">' +
-                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
-                ' </div>' +
-                '<div class="mx-auto">' +
-                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
-                '</div>' +
-            '</div>' +
-        '</div>' ;
 
         //LECTURE ET AFFICHAGE TACHES A FAIRE
         // récupère les valeurs données par l'utilisateur lors de la création de la tâche
@@ -83,10 +80,24 @@ $(document).ready(function () {
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
                 '</div>';
 
+                var cardfooter =
+                    '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                    '<div class="row">' +
+                    '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                    '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '<div class="mx-auto">' +
+                    '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                    ' </div>' +
+                    '<div class="mx-auto">' +
+                    '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' ;
+
             card = cardbody+cardfooter ;
-                console.log(card);
+              //  console.log(card);
                 $("#aFaire").append(card) ;
-                $("#cardTID_"+doc.id).draggable();
             });
             $( ".taskBlock" ).draggable({ revert: true });
         });
@@ -102,6 +113,22 @@ $(document).ready(function () {
                 '<p class="card-text">'+doc.data().description+'</p>' +
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
                 '</div>';
+
+
+            var cardfooter =
+                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                '<div class="row">' +
+                '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>' ;
 
             card = cardbody+cardfooter ;
             console.log(card);
@@ -121,8 +148,24 @@ $(document).ready(function () {
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
                 '</div>';
 
+
+            var cardfooter =
+                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                '<div class="row">' +
+                '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>' ;
+
             card = cardbody+cardfooter ;
-            console.log(card);
+         //   console.log(card);
             $("#terminer").append(card);
         });
         $( ".taskBlock" ).draggable({ revert: true });
