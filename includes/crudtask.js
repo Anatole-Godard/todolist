@@ -18,6 +18,7 @@ $(document).ready(function () {
             let datetask = $("#datetask").val();
             let dateremindertask = $("#dateremindertask").val();
             let categorytask = $("#category").val();
+            let now = new Date();
 
             //créer notre nouvelle tâche avec les valeurs données
             db.collection("user").doc(idUser).collection('tasks').doc(lastTask.toString()).set({
@@ -26,6 +27,8 @@ $(document).ready(function () {
                 date: datetask,
                 datereminder: dateremindertask,
                 category: categorytask,
+                statement: 'à faire',
+                creationdate: now
             })
                 .then(function (docRef) {
                     //une fois créée on incrémente en base le champ qui compte le nombre de tâches créé par l'utilisateur
