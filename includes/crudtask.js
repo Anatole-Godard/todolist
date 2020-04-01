@@ -1,9 +1,9 @@
 //DELETE
 function deletetask(taskid) {
-    var tid = String(taskid);
+    let tid = String(taskid);
     // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
-    var idUser = localStorage.getItem('user');
-    var db = firebase.firestore();
+    let idUser = localStorage.getItem('user');
+    let db = firebase.firestore();
     //changement du statement en base + supprime de l'affichage
     db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: "supprimé"})
     .then(function() {
@@ -70,16 +70,17 @@ $(document).ready(function () {
 
 
 //READ
-        var card ;
-        var cardbody ;
-
+        let card ;
+        let cardbody ;
+        let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"' ;
+        let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3"' ;
         //LECTURE ET AFFICHAGE TACHES A FAIRE
         // récupère les taches à faire de l'utilisateur connecté
         db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "à faire").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
             //  construction du corps de la carte
-            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
-                '<div class="card-body">' +
+            cardbody = '<div id="cardTID_'+doc.id+'" '+classdiv+' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
                 '<h4 class="card-title">'+doc.data().name +'</h4>' +
                 '<p class="card-text">'+doc.data().description+'</p>' +
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
@@ -88,7 +89,7 @@ $(document).ready(function () {
                 var cardfooter =
                     '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                     '<div class="row">' +
-                    '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                    '<div onclick="deletetask('+doc.id+')" '+mouseover+' class="mx-auto">' +
                     '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
                     '</div>' +
                     '<div class="mx-auto">' +
@@ -113,8 +114,8 @@ $(document).ready(function () {
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "en cours").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             //construction du corps de la carte
-            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
-                '<div class="card-body">' +
+            cardbody = '<div id="cardTID_'+doc.id+'" '+classdiv+' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
                 '<h4 class="card-title">'+doc.data().name +'</h4>' +
                 '<p class="card-text">'+doc.data().description+'</p>' +
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
@@ -123,7 +124,7 @@ $(document).ready(function () {
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
-                '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                '<div onclick="deletetask('+doc.id+')" '+mouseover+' class="mx-auto">' +
                 '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
@@ -148,8 +149,8 @@ $(document).ready(function () {
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "terminé").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // construction du corps de la carte
-            cardbody = '<div id="cardTID_'+doc.id+'" class="mx-auto taskBlock card text-white bg-danger mb-3" style="max-width: 20rem;">' +
-                '<div class="card-body">' +
+            cardbody = '<div id="cardTID_'+doc.id+'" '+classdiv+' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate">' +
                 '<h4 class="card-title">'+doc.data().name +'</h4>' +
                 '<p class="card-text">'+doc.data().description+'</p>' +
                 '<p class="card-text float-right"><small>'+doc.data().date+'</small></p>' +
@@ -158,7 +159,7 @@ $(document).ready(function () {
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
-                '<div onclick="deletetask('+doc.id+')" class="mx-auto">' +
+                '<div onclick="deletetask('+doc.id+')" '+mouseover+' class="mx-auto">' +
                 '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
