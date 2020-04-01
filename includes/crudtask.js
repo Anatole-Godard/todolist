@@ -16,10 +16,11 @@
 4 - idUser[String], l'ID de l'utilisateur dans la BDD
 */
 function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
+    let addclass = taskdiv.substr(1,taskdiv.length-1);
     let card;
     let cardbody;
     let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
-    let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3"';
+    let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3 '+addclass+'"';
 
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -150,4 +151,169 @@ $(document).ready(function () {
         console.log(cardtid);
     });
 
+    let name = localStorage.getItem('displayName');
+    $( "#aFaire" ).droppable({
+        accept: ".terminer, .enCour",
+        classes: {
+            "ui-droppable-hover": "bg-success"
+        },
+        drop: function( event, ui ) {
+            let statut = 'à faire';
+            let classStatut;
+            let classNewStatut = 'aFaire';
+            let idUser = firebase.auth().currentUser.uid;
+
+            // on recupere l'id de la tache
+            let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+
+            // on recupere les class
+            let classTask= ui.draggable.prop('class');
+
+            // si classTask a dans la liste des class aFaire
+            if (classTask.search("terminer") !== -1) {
+                // on determine le statut d
+                classStatut = 'terminer';
+            } else {
+                classStatut = 'enCour';
+            }
+
+            let db = firebase.firestore();
+            //changement du statement en base + supprime de l'affichage
+            db.collection("user").doc(idUser).collection('tasks').doc(taskid).update({statement: statut})
+                .then(function () {
+                    // on copie l'element
+                    let copyElement = $("#cardTID_" + taskid);
+                    // on supprime l'element
+                    $("#cardTID_" + taskid).remove();
+                    // on ajoute la copie dans la nouvelle colonne de statut
+                    $( "#"+classNewStatut ).append(copyElement);
+                    // on retire l'ancienne class de statut et ajoute la nouvelle
+                    $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
+                    // on bout de 1s(1000ms)
+                    setTimeout(function () {
+                        // on rend draggable l'ajout dans la colonne
+                        $(".taskBlock").draggable({revert: true});
+                    },500);
+                    //recharchement de la page
+                    // $("#mainContent").load('includes/mainTask.html', function () {
+                    //     // on injecte le titre de la page
+                    //     $('#mainSubTitle').html('Taches de ' + name);
+                    // });
+                })
+                .catch(function (error) {
+                    //log les erreurs dans la console
+                    console.error("Error when updating task: ", error);
+                });
+        }
+    });
+
+    $( "#enCour" ).droppable({
+        accept: ".aFaire, .terminer",
+        classes: {
+            "ui-droppable-hover": "bg-success"
+        },
+        drop: function( event, ui ) {
+            let statut = 'en cours';
+            let classStatut;
+            let classNewStatut = 'enCour';
+            let idUser = firebase.auth().currentUser.uid;
+
+            // on recupere l'id de la tache
+            let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+
+            // on recupere les class
+            let classTask= ui.draggable.prop('class');
+
+            // si classTask a dans la liste des class aFaire
+            if (classTask.search("aFaire") !== -1) {
+                // on determine le statut d
+                classStatut = 'aFaire';
+            } else {
+                classStatut = 'terminer';
+            }
+
+            let db = firebase.firestore();
+            //changement du statement en base + supprime de l'affichage
+            db.collection("user").doc(idUser).collection('tasks').doc(taskid).update({statement: statut})
+                .then(function () {
+                    // on copie l'element
+                    let copyElement = $("#cardTID_" + taskid);
+                    // on supprime l'element
+                    $("#cardTID_" + taskid).remove();
+                    // on ajoute la copie dans la nouvelle colonne de statut
+                    $( "#"+classNewStatut ).append(copyElement);
+                    // on retire l'ancienne class de statut et ajoute la nouvelle
+                    $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
+                    // on bout de 1s(1000ms)
+                    setTimeout(function () {
+                        // on rend draggable l'ajout dans la colonne
+                        $(".taskBlock").draggable({revert: true});
+                    },500);
+                    //recharchement de la page
+                    // $("#mainContent").load('includes/mainTask.html', function () {
+                    //     // on injecte le titre de la page
+                    //     $('#mainSubTitle').html('Taches de ' + name);
+                    // });
+                })
+                .catch(function (error) {
+                    //log les erreurs dans la console
+                    console.error("Error when updating task: ", error);
+                });
+        }
+});
+
+    $( "#terminer" ).droppable({
+        accept: ".aFaire, .enCour",
+        classes: {
+            "ui-droppable-hover": "bg-success"
+        },
+        drop: function( event, ui ) {
+            let statut = 'terminé';
+            let classStatut;
+            let classNewStatut = 'terminer';
+            let idUser = firebase.auth().currentUser.uid;
+
+            // on recupere l'id de la tache
+            let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+
+            // on recupere les class
+            let classTask= ui.draggable.prop('class');
+
+            // si classTask a dans la liste des class aFaire
+            if (classTask.search("aFaire") !== -1) {
+                // on determine le statut d
+                classStatut = 'aFaire';
+            } else {
+                classStatut = 'enCour';
+            }
+
+            let db = firebase.firestore();
+            //changement du statement en base + supprime de l'affichage
+            db.collection("user").doc(idUser).collection('tasks').doc(taskid).update({statement: statut})
+                .then(function () {
+                    // on copie l'element
+                    let copyElement = $("#cardTID_" + taskid);
+                    // on supprime l'element
+                    $("#cardTID_" + taskid).remove();
+                    // on ajoute la copie dans la nouvelle colonne de statut
+                    $( "#"+classNewStatut ).append(copyElement);
+                    // on retire l'ancienne class de statut et ajoute la nouvelle
+                    $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
+                    // on bout de 1s(1000ms)
+                    setTimeout(function () {
+                        // on rend draggable l'ajout dans la colonne
+                        $(".taskBlock").draggable({revert: true});
+                    },500);
+                    //recharchement de la page
+                    // $("#mainContent").load('includes/mainTask.html', function () {
+                    //     // on injecte le titre de la page
+                    //     $('#mainSubTitle').html('Taches de ' + name);
+                    // });
+                })
+                .catch(function (error) {
+                    //log les erreurs dans la console
+                    console.error("Error when updating task: ", error);
+                });
+        }
+    });
 });
