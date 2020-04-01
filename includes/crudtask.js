@@ -77,7 +77,59 @@ $(document).ready(function () {
 
 
 //READ
-    let card;
+    function createCardForTask(tasktype,taskdiv) {
+        let card;
+        let cardbody;
+        let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
+        let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3"';
+
+        db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                //  construction du corps de la carte
+                cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
+                    '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
+                    '<h4 class="card-title">' + doc.data().name + '</h4>' +
+                    '<p class="card-text">' + doc.data().description + '</p>' +
+                    '<p class="card-text float-right"><small>' + doc.data().date + '</small></p>' +
+                    '</div>';
+                //construction du pied de carte
+                var cardfooter =
+                    '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                    '<div class="row">' +
+                    '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
+                    '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '<div class="mx-auto">' +
+                    '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                    ' </div>' +
+                    '<div class="mx-auto">' +
+                    '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                //Assemblage de la carte.
+                card = cardbody + cardfooter;
+                //  Ajout de la carte à la Div "aFaire"
+                $(taskdiv).append(card);
+            });
+            //Permet de rendre la carte draggable
+            $(".taskBlock").draggable({revert: true});
+        });
+
+    }
+    createCardForTask("à faire", "#aFaire");
+    createCardForTask("en cours", "#enCour");
+    createCardForTask("terminé", "#terminer");
+
+
+    $("#modalUpdate").on('show.bs.modal', function (e) {
+        var div = e.relatedTarget;
+        var cardtid = div.id;
+        console.log(cardtid);
+    });
+
+});
+  /*  let card;
     let cardbody;
     let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
     let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3"';
@@ -115,10 +167,11 @@ $(document).ready(function () {
         //Permet de rendre la carte draggable
         $(".taskBlock").draggable({revert: true});
     });
+*/
 
     //LECTURE ET AFFICHAGE des taches en cours
     // récupère les taches en cours de l'utilisateur connecté
-    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "en cours").get().then((querySnapshot) => {
+  /*  db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "en cours").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             //construction du corps de la carte
             cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
@@ -150,10 +203,10 @@ $(document).ready(function () {
         //Permet de rendre la carte draggable
         $(".taskBlock").draggable({revert: true});
     });
-
+*/
     //LECTURE ET AFFICHAGE des taches terminées
     // récupère les taches terminées de l'utilisateur connecté
-    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "terminé").get().then((querySnapshot) => {
+   /* db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "terminé").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // construction du corps de la carte
             cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
@@ -184,12 +237,5 @@ $(document).ready(function () {
         });
         //Permet de rendre la carte draggable
         $(".taskBlock").draggable({revert: true});
-    });
+    });*/
 
-    $("#modalUpdate").on('show.bs.modal', function (e) {
-        var div = e.relatedTarget;
-        var cardtid = div.id;
-        console.log(cardtid);
-    });
-
-});
