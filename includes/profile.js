@@ -235,33 +235,42 @@ function signOut() {
     });
 }
 
+// on récupère la liste des utilisateus
 db.collection("user").get().then((querySnapshot) => {
     let userIdList = [];
+
+    // On recupère chaque ID d'utilisateur
     querySnapshot.forEach((doc) => {
         userIdList.push(doc.id)
-
     });
 
+    // Sur chaque ID d'utilisateur
     userIdList.forEach(idUser => {
-        db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
-            let photoURL = querySnapshot.data().photoURL;
-            let pseudo = querySnapshot.data().pseudo;
-            cardUser = '<div class="user my-1 col-md-12 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
-                '<div class="col-2 ml-3 p-0 pt-1">' +
-                '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
-                '</div>' +
-                '<div class="col-8">' +
-                '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
-                '</div>' +
-                '</div>';
-            $("#listUser").append(cardUser);
-            $( ".user" ).draggable({ revert: true });
-        })
+        // Si ce n'est pas l'utilisateur connecté
+        if (idUser !== localStorage.getItem('user')) {
+            // On récupère les données
+            db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                let photoURL = querySnapshot.data().photoURL;
+                let pseudo = querySnapshot.data().pseudo;
+
+                // On définie l'element html
+                cardUser = '<div class="user my-1 col-md-12 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                    '<div class="col-2 ml-3 p-0 pt-1">' +
+                    '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                    '</div>' +
+                    '<div class="col-8">' +
+                    '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                    '</div>' +
+                    '</div>';
+
+                // on injecte l'element html a la liste des utilisateurs
+                $("#listUser").append(cardUser);
+                // rendre draggable l'element ajouté
+                $( ".user" ).draggable({ revert: true });
+            });
+        }
     })
-    // console.log(userIdList)
 });
-// rendre draggable la class user
-$('.user').draggable({revert:true});
 
 // rendre myColab droppable
 $( "#myColab" ).droppable({
