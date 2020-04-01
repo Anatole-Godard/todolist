@@ -272,7 +272,7 @@ db.collection("user").get().then((querySnapshot) => {
                     '<div class="col-2 ml-3 p-0 pt-1">' +
                     '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                     '</div>' +
-                    '<div class="col-8">' +
+                    '<div class="col-9">' +
                     '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
                     '</div>' +
                     '</div>';
