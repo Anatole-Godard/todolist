@@ -4,7 +4,6 @@ function deletetask(taskid) {
     var idUser = localStorage.getItem('user');
     var db = firebase.firestore();
     db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: "supprimé"}).then(function() {
-        console.log("prout") ;
     $("#cardTID_"+taskid).remove();
     }) ;
   //  console.log(taskid);
