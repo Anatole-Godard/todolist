@@ -39,7 +39,6 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
                 '<div ' + mouseover + ' id="' + doc.id + '" data-toggle="modal" data-target="#modalDelete" class="mx-auto">' +
-                // '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' data-toggle="modal" data-target="#modalDelete" class="mx-auto">' +
                 '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
@@ -56,12 +55,17 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             $(taskdiv).append(card);
         });
         //Permet de rendre la carte draggable
-        $(".taskBlock").draggable({revert: true});
+        if(tasktype!=="archivé") {$(".taskBlock").draggable({revert: true});}
+
     });
     return true;
 }
 
 //DELETE
+
+
+
+
 function deletetask(taskid) {
     let tid = String(taskid);
     // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'

@@ -1,5 +1,3 @@
-//READ
-
 //Document Ready !! C'est parti !
 
 $(document).ready(function () {
