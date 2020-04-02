@@ -27,7 +27,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
         querySnapshot.forEach((doc) => {
             //  construction du corps de la carte
             cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
-                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate">' +
                 '<h4 class="card-title name">' + doc.data().name + '</h4>' +
                 '<p class="card-text description">' + doc.data().description + '</p>' +
                 '<p class="card-text date float-right"><small>' + doc.data().date + '</small></p>' +
@@ -40,7 +40,8 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
-                '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
+                '<div ' + mouseover + ' id="' + doc.id + '" data-toggle="modal" data-target="#modalDelete" class="mx-auto">' +
+               // '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' data-toggle="modal" data-target="#modalDelete" class="mx-auto">' +
                 '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
@@ -199,6 +200,25 @@ function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremind
 
 
 }
+//SUPPRIMER UNE TACHE
+$("#modalDelete").on('show.bs.modal', function (data) {
+    let db = firebase.firestore();
+    let cardtid = data.relatedTarget.id;
+    console.log("Modal : "+cardtid) ;
+
+    $("#btnDelete").on('click', function (data) {
+
+        console.log(cardtid) ;
+        deletetask(cardtid) ;
+        $("#modalDelete").attr('class', 'modal fade').attr('style', 'display: none;').attr('aria-hidden', 'true');
+        $("body").attr('class', '');
+        $(".modal-backdrop").remove();
+
+    });
+
+});
+
+
 
 $( "#aFaire" ).droppable({
     accept: ".terminer, .enCour",
