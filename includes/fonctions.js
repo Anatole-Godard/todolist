@@ -20,6 +20,13 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     let cardbody;
     let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
     let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3 '+addclass+'"';
+    let iconecorbeille = 'fa fa-trash-o' ;
+    let modaltype = "#modalDelete" ;
+    if(tasktype==="supprimé") {
+
+        iconecorbeille = 'fa fa-arrow-circle-up';
+        modaltype = "#modalUnarchive" ;
+        }
     // $(taskdiv).empty();
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -38,8 +45,8 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
-                '<div ' + mouseover + ' id="' + doc.id + '" data-toggle="modal" data-target="#modalDelete" class="mx-auto">' +
-                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '<div ' + mouseover + ' id="' + doc.id + '" data-toggle="modal" data-target="'+modaltype+'" class="mx-auto">' +
+                '<i class="'+iconecorbeille+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
                 '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
@@ -55,24 +62,21 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             $(taskdiv).append(card);
         });
         //Permet de rendre la carte draggable
-        if(tasktype!=="archivé") {$(".taskBlock").draggable({revert: true});}
+        if(tasktype!=="supprimé") {$(".taskBlock").draggable({revert: true});}
 
     });
     return true;
 }
 
 //DELETE
-
-
-
-
-function deletetask(taskid) {
+function updateTaskStatus(taskid, taskstatus) {
     let tid = String(taskid);
+    taskstatus = String(taskstatus);
     // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
     let idUser = localStorage.getItem('user');
     let db = firebase.firestore();
     //changement du statement en base + supprime de l'affichage
-    db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: "supprimé"})
+    db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: taskstatus})
         .then(function () {
             $("#cardTID_" + taskid).remove();
         })
@@ -81,3 +85,5 @@ function deletetask(taskid) {
             console.error("Error when deleting task: ", error);
         });
 }
+
+

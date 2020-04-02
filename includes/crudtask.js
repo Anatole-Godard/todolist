@@ -126,7 +126,7 @@ $("#modalDelete").on('show.bs.modal', function (data) {
     $("#btnDelete").on('click', function (data) {
 
         console.log(cardtid) ;
-        deletetask(cardtid) ;
+        updateTaskStatus(cardtid, "supprimé") ;
         $("#modalDelete").attr('class', 'modal fade').attr('style', 'display: none;').attr('aria-hidden', 'true');
         $("body").attr('class', '');
         $(".modal-backdrop").remove();
