@@ -69,10 +69,7 @@ $(document).ready(function () {
     var idUser = localStorage.getItem('user');
 
     var db = firebase.firestore();
-    //Execution du templates pour les taches ( à faire, En cours, Terminé).
-    readTaskCreateCard("à faire", "#aFaire", db, idUser);
-    readTaskCreateCard("en cours", "#enCour", db, idUser);
-    readTaskCreateCard("terminé", "#terminer", db, idUser);
+
     // ajoute un event sur le bouton pour créer une tâche
     $("#create").click(function () {
         var idUser = localStorage.getItem('user');
@@ -301,10 +298,10 @@ $( "#terminer" ).droppable({
         let classNewStatut = 'terminer';
         let idUser = firebase.auth().currentUser.uid;
 
-        // on recupere l'id de la tache
-        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
-        // on hide la div
-        $("#cardTID_" + taskid).hide();
+    //Execution du templates pour les taches ( à faire, En cours, Terminé).
+    readTaskCreateCard("à faire", "#aFaire", db, idUser);
+    readTaskCreateCard("en cours", "#enCour", db, idUser);
+    readTaskCreateCard("terminé", "#terminer", db, idUser);
 
         // on recupere les class
         let classTask= ui.draggable.prop('class');
