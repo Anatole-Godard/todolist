@@ -196,6 +196,8 @@ $( "#aFaire" ).droppable({
 
         // on recupere les class
         let classTask= ui.draggable.prop('class');
+        // on hide la div
+        $("#cardTID_" + taskid).hide();
 
         // si classTask a dans la liste des class aFaire
         if (classTask.search("terminer") !== -1) {
@@ -218,6 +220,8 @@ $( "#aFaire" ).droppable({
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
                 $("#cardTID_" + taskid +" .statement").html(statut);
+                // on show la div
+                $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
@@ -244,6 +248,8 @@ $( "#enCour" ).droppable({
 
         // on recupere l'id de la tache
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        // on hide la div
+        $("#cardTID_" + taskid).hide();
 
         // on recupere les class
         let classTask= ui.draggable.prop('class');
@@ -269,6 +275,8 @@ $( "#enCour" ).droppable({
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
                 $("#cardTID_" + taskid +" .statement").html(statut);
+                // on show la div
+                $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
@@ -295,6 +303,8 @@ $( "#terminer" ).droppable({
 
         // on recupere l'id de la tache
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        // on hide la div
+        $("#cardTID_" + taskid).hide();
 
         // on recupere les class
         let classTask= ui.draggable.prop('class');
@@ -320,6 +330,8 @@ $( "#terminer" ).droppable({
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
                 $("#cardTID_" + taskid +" .statement").html(statut);
+                // on show la div
+                $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
