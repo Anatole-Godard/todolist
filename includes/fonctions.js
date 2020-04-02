@@ -26,7 +26,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
 
         iconecorbeille = 'fa fa-arrow-circle-up';
         modaltype = "#modalUnarchive" ;
-        }
+    }
     // $(taskdiv).empty();
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -41,7 +41,21 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<p class="card-text category d-none">' + doc.data().category + '</p>' +
                 '<p class="card-text creationdate d-none">' + doc.data().creationdate + '</p>' +
                 '</div>';
+
             //construction du pied de carte
+            let classDate = "";
+            let classReminder = "";
+
+            // Si on a une date de tache
+            if (doc.data().date !== ""){
+                classDate = "textActive";
+            }
+
+            // Si on a une date de tache
+            if (doc.data().datereminder !== ""){
+                classReminder = "textActive";
+            }
+
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
@@ -49,10 +63,10 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<i class="'+iconecorbeille+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                '<i class="fa fa-clock-o '+classDate+'" aria-hidden="true"></i>' +
                 ' </div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '<i class="fa fa-calendar-o '+classReminder+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '</div>' +
                 '</div>';

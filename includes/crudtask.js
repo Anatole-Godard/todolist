@@ -149,7 +149,7 @@ $( "#toolbar" ).droppable({
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
 
         // on hide la div
-        $("#cardTID_" + taskid).hide();
+        $("#cardTID_" + taskid).fadeOut();
 
         let db = firebase.firestore();
         //changement du statement en base + supprime de l'affichage
