@@ -1,3 +1,21 @@
+//READ
+
+//readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
+//           readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
+//
+//description :
+//
+//Cette fonction permet de LIRE les taches en fonction de leur type et de l'USERID depuis une BDD.
+//Puis les affiches sous forme de CARTES dans la div indiquée.
+//Le template des taches est défini dans cette fonction.
+//
+//Paramètres :
+/*
+1 - Type_de_tache[String], le type de tache a afficher, obligatoire, chaine de caractères.
+2 - ID_de_div[String], l'ID de la div de destination, obligatoire, chaine de caractères. ' +
+3 - db[Object], la BDD source. (Firebase object)
+4 - idUser[String], l'ID de l'utilisateur dans la BDD
+*/
 function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     let addclass = taskdiv.substr(1,taskdiv.length-1);
     let card;
