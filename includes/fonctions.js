@@ -63,10 +63,10 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<i class="'+iconecorbeille+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-clock-o '+classDate+'" aria-hidden="true"></i>' +
+                '<i class="fa fa-clock-o '+classReminder+'" aria-hidden="true"></i>' +
                 ' </div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-calendar-o '+classReminder+'" aria-hidden="true"></i>' +
+                '<i class="fa fa-calendar-o '+classDate+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
