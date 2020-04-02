@@ -18,19 +18,19 @@ function addTaskCollab(idTask, idUser, collabList, idCollabAdd) {
         let collabOnTask = querySnapshot.data().collabOnTask;
 
         if (collabOnTask !== undefined) {
-            if (collabOnTask.length === 0){
-                collabOnTask=[];
+            if (collabOnTask.length === 0) {
+                collabOnTask = [];
             }
         } else {
-            collabOnTask=[];
+            collabOnTask = [];
         }
         collabOnTask.push(idCollabAdd);
         db.collection("user").doc(idUser).collection('tasks').doc(idTask).update({
-            collabOnTask:collabOnTask
+            collabOnTask: collabOnTask
         });
 
         db.collection("user").doc(idCollabAdd).get().then((querySnapshot) => {
-            let lastTask = querySnapshot.data().nbTask+1;
+            let lastTask = querySnapshot.data().nbTask + 1;
             setTaskCollab(idCollabAdd, lastTask, name, description, date, datereminder, category, creationdate, statement, collabList);
             db.collection("user").doc(idCollabAdd).set({
                 nbTask: lastTask
@@ -50,25 +50,25 @@ function removeTaskCollab(idTask, idUser, idCollabRemove) {
         let collabOnTask = querySnapshot.data().collabOnTask;
         let taskstatus = 'supprimé';
 
-        for (let i = 0;i<collabOnTask.length;i++){
-            if (collabOnTask[i] === idCollabRemove){
+        for (let i = 0; i < collabOnTask.length; i++) {
+            if (collabOnTask[i] === idCollabRemove) {
                 // on supprime l'id de notre tableau
-                collabOnTask.splice(i,1);
+                collabOnTask.splice(i, 1);
             }
         }
         db.collection("user").doc(idUser).collection('tasks').doc(idTask).update({
-            collabOnTask:collabOnTask
+            collabOnTask: collabOnTask
         });
 
         db.collection("user").doc(idCollabRemove).collection('tasks').where("creationdate", "==", creationdate).get().then(response => {
-                console.log(response);
-                response.docs.forEach((doc) => {
-                    db.collection("user").doc(idCollabRemove).collection('tasks').doc(doc.id).update({
-                            statement: taskstatus
-                    }).then(function () {
-                        console.log('supprimé');
-                    })
-                });
+            console.log(response);
+            response.docs.forEach((doc) => {
+                db.collection("user").doc(idCollabRemove).collection('tasks').doc(doc.id).update({
+                    statement: taskstatus
+                }).then(function () {
+                    console.log('supprimé');
+                })
+            });
         });
     });
 }
@@ -83,7 +83,6 @@ $(document).ready(function () {
     readTaskCreateCard("terminé", "#terminer", db, idUser);
     // ajoute un event sur le bouton pour créer une tâche
     $("#create").click(function () {
-
 
 
         var idUser = localStorage.getItem('user');
@@ -134,7 +133,7 @@ $(document).ready(function () {
                 if (arrayCollab.length > 0) {
                     let listCollab = [];
 
-                    for (let i = 0;i<arrayCollab.length;i++){
+                    for (let i = 0; i < arrayCollab.length; i++) {
                         listCollab.push(arrayCollab[i]);
                     }
                     $("#listCollab").html('');
@@ -148,77 +147,77 @@ $(document).ready(function () {
                                 if (taskCollab !== undefined) {
                                     if (taskCollab.length === 0) {
                                         // On définie l'element html
-                                        var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                        var cardUser = '<div id="' + idUser + '" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
                                             '<div class="col-2 ml-3 p-0 pt-1">' +
-                                            '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                            '<img id=\'imgNavbar\' src="' + photoURL + '" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                                             '</div>' +
                                             '<div class="col-9">' +
-                                            '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                            '<p class="text-primary mb-2 pt-2">' + pseudo + '</p>' +
                                             '</div>' +
                                             '</div>';
                                     } else {
                                         let indic = 0;
-                                        for (let i = 0;i<taskCollab.length;i++){
-                                            if (taskCollab[i] === idUser){
-                                                indic =1;
+                                        for (let i = 0; i < taskCollab.length; i++) {
+                                            if (taskCollab[i] === idUser) {
+                                                indic = 1;
                                                 // On définie l'element html
-                                                var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-success" style="z-index: 1;">' +
+                                                var cardUser = '<div id="' + idUser + '" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-success" style="z-index: 1;">' +
                                                     '<div class="col-2 ml-3 p-0 pt-1">' +
-                                                    '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                                    '<img id=\'imgNavbar\' src="' + photoURL + '" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                                                     '</div>' +
                                                     '<div class="col-9">' +
-                                                    '<p class="text-light mb-2 pt-2">'+pseudo+'</p>' +
+                                                    '<p class="text-light mb-2 pt-2">' + pseudo + '</p>' +
                                                     '</div>' +
                                                     '</div>';
                                                 collabOnTask.push(idUser);
                                             }
                                         }
-                                        if(indic === 0) {
+                                        if (indic === 0) {
                                             // On définie l'element html
-                                            var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                            var cardUser = '<div id="' + idUser + '" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
                                                 '<div class="col-2 ml-3 p-0 pt-1">' +
-                                                '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                                '<img id=\'imgNavbar\' src="' + photoURL + '" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                                                 '</div>' +
                                                 '<div class="col-9">' +
-                                                '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                                '<p class="text-primary mb-2 pt-2">' + pseudo + '</p>' +
                                                 '</div>' +
                                                 '</div>';
                                         }
                                     }
                                 } else {
                                     // On définie l'element html
-                                    var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                    var cardUser = '<div id="' + idUser + '" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
                                         '<div class="col-2 ml-3 p-0 pt-1">' +
-                                        '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                        '<img id=\'imgNavbar\' src="' + photoURL + '" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
                                         '</div>' +
                                         '<div class="col-9">' +
-                                        '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                        '<p class="text-primary mb-2 pt-2">' + pseudo + '</p>' +
                                         '</div>' +
                                         '</div>';
 
                                 }
                                 // on injecte l'element html a la liste des utilisateurs
                                 $("#listCollab").append(cardUser);
-                                $('#'+idUser).click(function () {
+                                $('#' + idUser).click(function () {
                                     console.log($(this)[0].id);
                                     $(this).toggleClass('bg-light').toggleClass('bg-success').find('p').toggleClass('text-primary').toggleClass('text-light');
                                     let idCollab = $(this)[0].id;
                                     if (collabOnTask.length > 0) {
                                         let collabInArray = 0;
-                                        for (let i = 0;i<collabOnTask.length;i++){
-                                            if (collabOnTask[i] === idCollab){
+                                        for (let i = 0; i < collabOnTask.length; i++) {
+                                            if (collabOnTask[i] === idCollab) {
                                                 collabInArray = 1;
                                                 // on supprime l'id de notre tableau
-                                                collabOnTask.splice(i,1);
+                                                collabOnTask.splice(i, 1);
 
                                             }
                                         }
-                                        if (collabInArray === 0){
+                                        if (collabInArray === 0) {
                                             collabOnTask.push(idCollab);
 
                                             let collabList = [];
                                             collabOnTask.forEach(id => {
-                                                if (id !== idUser || id !== idUser){
+                                                if (id !== idUser || id !== idUser) {
                                                     collabList.push(id);
                                                 }
                                             });
@@ -232,7 +231,7 @@ $(document).ready(function () {
 
                                         let collabList = [];
                                         collabOnTask.forEach(id => {
-                                            if (id !== idUser || id !== idUser){
+                                            if (id !== idUser || id !== idUser) {
                                                 collabList.push(id);
                                             }
                                         });
@@ -283,6 +282,7 @@ $(document).ready(function () {
     });
 
 });
+
 function setTaskCollab(idUser, idTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, statement, collabOnTask) {
     console.log(collabOnTask);
     let db = firebase.firestore();
@@ -341,16 +341,17 @@ function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremind
 
 
 }
+
 //SUPPRIMER UNE TACHE
 $("#modalDelete").on('show.bs.modal', function (data) {
     let db = firebase.firestore();
     let cardtid = data.relatedTarget.id;
-    console.log("Modal : "+cardtid) ;
+    console.log("Modal : " + cardtid);
 
     $("#btnDelete").on('click', function (data) {
 
-        console.log(cardtid) ;
-        updateTaskStatus(cardtid, "supprimé") ;
+        console.log(cardtid);
+        updateTaskStatus(cardtid, "supprimé");
         $("#modalDelete").attr('class', 'modal fade').attr('style', 'display: none;').attr('aria-hidden', 'true');
         $("body").attr('class', '');
         $(".modal-backdrop").remove();
@@ -359,18 +360,18 @@ $("#modalDelete").on('show.bs.modal', function (data) {
 
 });
 
-$( "#toolbar" ).droppable({
+$("#toolbar").droppable({
     accept: ".terminer, .enCour, .aFaire",
     hoverClass: "translate_toolbar",
     classes: {
         "ui-droppable-hover": "bg-success"
     },
-    drop: function( event, ui ) {
+    drop: function (event, ui) {
         let statut = 'archivé';
         let idUser = firebase.auth().currentUser.uid;
 
         // on recupere l'id de la tache
-        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        let taskid = ui.draggable.prop('id').substr(8, ui.draggable.prop('id').length);
 
         // on hide la div
         $("#cardTID_" + taskid).fadeOut();
@@ -390,22 +391,22 @@ $( "#toolbar" ).droppable({
 });
 
 
-$( "#aFaire" ).droppable({
+$("#aFaire").droppable({
     accept: ".terminer, .enCour",
     classes: {
         "ui-droppable-hover": "bg-success"
     },
-    drop: function( event, ui ) {
+    drop: function (event, ui) {
         let statut = 'à faire';
         let classStatut;
         let classNewStatut = 'aFaire';
         let idUser = firebase.auth().currentUser.uid;
 
         // on recupere l'id de la tache
-        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        let taskid = ui.draggable.prop('id').substr(8, ui.draggable.prop('id').length);
 
         // on recupere les class
-        let classTask= ui.draggable.prop('class');
+        let classTask = ui.draggable.prop('class');
         // on hide la div
         $("#cardTID_" + taskid).hide();
 
@@ -426,17 +427,17 @@ $( "#aFaire" ).droppable({
                 // on supprime l'element
                 $("#cardTID_" + taskid).remove();
                 // on ajoute la copie dans la nouvelle colonne de statut
-                $( "#"+classNewStatut ).append(copyElement);
+                $("#" + classNewStatut).append(copyElement);
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
-                $("#cardTID_" + taskid +" .statement").html(statut);
+                $("#cardTID_" + taskid + " .statement").html(statut);
                 // on show la div
                 $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true,scroll: false});
-                },500);
+                    $(".taskBlock").draggable({revert: true, scroll: false});
+                }, 500);
             })
             .catch(function (error) {
                 //log les erreurs dans la console
@@ -445,24 +446,24 @@ $( "#aFaire" ).droppable({
     }
 });
 
-$( "#enCour" ).droppable({
+$("#enCour").droppable({
     accept: ".aFaire, .terminer",
     classes: {
         "ui-droppable-hover": "bg-success"
     },
-    drop: function( event, ui ) {
+    drop: function (event, ui) {
         let statut = 'en cours';
         let classStatut;
         let classNewStatut = 'enCour';
         let idUser = firebase.auth().currentUser.uid;
 
         // on recupere l'id de la tache
-        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        let taskid = ui.draggable.prop('id').substr(8, ui.draggable.prop('id').length);
         // on hide la div
         $("#cardTID_" + taskid).hide();
 
         // on recupere les class
-        let classTask= ui.draggable.prop('class');
+        let classTask = ui.draggable.prop('class');
 
         // si classTask a dans la liste des class aFaire
         if (classTask.search("aFaire") !== -1) {
@@ -481,17 +482,17 @@ $( "#enCour" ).droppable({
                 // on supprime l'element
                 $("#cardTID_" + taskid).remove();
                 // on ajoute la copie dans la nouvelle colonne de statut
-                $( "#"+classNewStatut ).append(copyElement);
+                $("#" + classNewStatut).append(copyElement);
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
-                $("#cardTID_" + taskid +" .statement").html(statut);
+                $("#cardTID_" + taskid + " .statement").html(statut);
                 // on show la div
                 $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true,scroll: false});
-                },500);
+                    $(".taskBlock").draggable({revert: true, scroll: false});
+                }, 500);
             })
             .catch(function (error) {
                 //log les erreurs dans la console
@@ -500,12 +501,12 @@ $( "#enCour" ).droppable({
     }
 });
 
-$( "#terminer" ).droppable({
+$("#terminer").droppable({
     accept: ".aFaire, .enCour",
     classes: {
         "ui-droppable-hover": "bg-success"
     },
-    drop: function( event, ui ) {
+    drop: function (event, ui) {
         // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
 
         let statut = 'terminé';
@@ -513,13 +514,13 @@ $( "#terminer" ).droppable({
         let classNewStatut = 'terminer';
         let idUser = firebase.auth().currentUser.uid;
 
-       // on recupere l'id de la tache
-        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        // on recupere l'id de la tache
+        let taskid = ui.draggable.prop('id').substr(8, ui.draggable.prop('id').length);
         // on hide la div
         $("#cardTID_" + taskid).hide();
 
         // on recupere les class
-        let classTask= ui.draggable.prop('class');
+        let classTask = ui.draggable.prop('class');
 
         // si classTask a dans la liste des class aFaire
         if (classTask.search("aFaire") !== -1) {
@@ -538,17 +539,17 @@ $( "#terminer" ).droppable({
                 // on supprime l'element
                 $("#cardTID_" + taskid).remove();
                 // on ajoute la copie dans la nouvelle colonne de statut
-                $( "#"+classNewStatut ).append(copyElement);
+                $("#" + classNewStatut).append(copyElement);
                 // on retire l'ancienne class de statut et ajoute la nouvelle
                 $("#cardTID_" + taskid).removeClass(classStatut).addClass(classNewStatut);
-                $("#cardTID_" + taskid +" .statement").html(statut);
+                $("#cardTID_" + taskid + " .statement").html(statut);
                 // on show la div
                 $("#cardTID_" + taskid).show();
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true,scroll: false});
-                },500);
+                    $(".taskBlock").draggable({revert: true, scroll: false});
+                }, 500);
             })
             .catch(function (error) {
                 //log les erreurs dans la console
