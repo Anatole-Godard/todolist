@@ -21,6 +21,7 @@ $("#account").click(function () {
 $('.home').click(function () {
     // On charge la page maintask dans la div contenu
     $("#mainContent").load('includes/mainTask.html',function () {
+        let name = localStorage.getItem('displayName');
         // on injecte le titre de la page
         $('#mainSubTitle').html('Taches de '+name);
     });

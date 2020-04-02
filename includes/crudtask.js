@@ -180,7 +180,6 @@ function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremind
 
 }
 
-let name = localStorage.getItem('displayName');
 $( "#aFaire" ).droppable({
     accept: ".terminer, .enCour",
     classes: {
