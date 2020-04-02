@@ -69,9 +69,14 @@ $(document).ready(function () {
     var idUser = localStorage.getItem('user');
 
     var db = firebase.firestore();
-
+    readTaskCreateCard("à faire", "#aFaire", db, idUser);
+    readTaskCreateCard("en cours", "#enCour", db, idUser);
+    readTaskCreateCard("terminé", "#terminer", db, idUser);
     // ajoute un event sur le bouton pour créer une tâche
     $("#create").click(function () {
+
+
+
         var idUser = localStorage.getItem('user');
         //récupère le Id de la dernière tâche créé par l'utilisateur connécté
         db.collection("user").doc(idUser).get().then(function (doc) {
@@ -293,15 +298,17 @@ $( "#terminer" ).droppable({
         "ui-droppable-hover": "bg-success"
     },
     drop: function( event, ui ) {
+        // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
+
         let statut = 'terminé';
         let classStatut;
         let classNewStatut = 'terminer';
         let idUser = firebase.auth().currentUser.uid;
 
-    //Execution du templates pour les taches ( à faire, En cours, Terminé).
-    readTaskCreateCard("à faire", "#aFaire", db, idUser);
-    readTaskCreateCard("en cours", "#enCour", db, idUser);
-    readTaskCreateCard("terminé", "#terminer", db, idUser);
+       // on recupere l'id de la tache
+        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+        // on hide la div
+        $("#cardTID_" + taskid).hide();
 
         // on recupere les class
         let classTask= ui.draggable.prop('class');
