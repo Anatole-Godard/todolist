@@ -219,7 +219,6 @@ $("#modalDelete").on('show.bs.modal', function (data) {
 });
 
 
-
 $( "#aFaire" ).droppable({
     accept: ".terminer, .enCour",
     classes: {
