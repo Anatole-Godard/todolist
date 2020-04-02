@@ -38,7 +38,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                         db.collection("user").doc(idCollab).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
                             let photoURL = querySnapshot.data().photoURL;
                             let pseudo = querySnapshot.data().pseudo;
-                            $('#'+doc.id).append("<img title='"+pseudo+"' src=\""+photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle float-right mr-2\" alt=\"\">");
+                            $('#'+doc.id).append("<img title='"+pseudo+"' src=\""+photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle float-right ml-2\" alt=\"\">");
                         })
                     })
                 }
@@ -49,7 +49,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate">' +
                 '<h4 class="card-title name">' + doc.data().name + '</h4>' +
                 '<p class="card-text description">' + doc.data().description + '</p>' +
-                '<p class="card-text date float-right"><small>' + doc.data().date + '</small></p>' +
+                '<p class="card-text date d-none"><small>' + doc.data().date + '</small></p>' +
                 '<p class="card-text statement d-none">' + doc.data().statement + '</p>' +
                 '<p class="card-text datereminder d-none">' + doc.data().datereminder + '</p>' +
                 '<p class="card-text category d-none">' + doc.data().category + '</p>' +
@@ -77,10 +77,10 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<i class="'+iconecorbeille+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-clock-o '+classReminder+'" aria-hidden="true"></i>' +
+                '<i class="fa fa-clock-o '+classReminder+'" title="'+doc.data().datereminder+'" aria-hidden="true"></i>' +
                 ' </div>' +
                 '<div class="mx-auto">' +
-                '<i class="fa fa-calendar-o '+classDate+'" aria-hidden="true"></i>' +
+                '<i class="fa fa-calendar-o '+classDate+'" title="'+doc.data().date+'" aria-hidden="true"></i>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
