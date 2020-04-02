@@ -135,6 +135,35 @@ $("#modalDelete").on('show.bs.modal', function (data) {
 
 });
 
+$( "#toolbar" ).droppable({
+    accept: ".terminer, .enCour, .aFaire",
+    hoverClass: "translate_toolbar",
+    classes: {
+        "ui-droppable-hover": "bg-success"
+    },
+    drop: function( event, ui ) {
+        let statut = 'archivé';
+        let idUser = firebase.auth().currentUser.uid;
+
+        // on recupere l'id de la tache
+        let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
+
+        // on hide la div
+        $("#cardTID_" + taskid).hide();
+
+        let db = firebase.firestore();
+        //changement du statement en base + supprime de l'affichage
+        db.collection("user").doc(idUser).collection('tasks').doc(taskid).update({statement: statut})
+            .then(function () {
+                // on supprime l'element
+                $("#cardTID_" + taskid).remove();
+            })
+            .catch(function (error) {
+                //log les erreurs dans la console
+                console.error("Error when updating task: ", error);
+            });
+    }
+});
 
 $( "#aFaire" ).droppable({
     accept: ".terminer, .enCour",

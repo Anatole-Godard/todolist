@@ -2,10 +2,17 @@
     <h1 id="mainSubTitle"></h1>
 </div>
 
-    <div class="float-right bg-danger rounded-circle text-center pt-2" data-toggle="modal" data-target="#modalCreate" style="width: 3em;height: 3em;color: white;z-index: 10" idTask="0">
-        <i class="fa fa-plus fa-2x mx-auto" aria-hidden="true"></i>
-    </div>
+<div class="float-right bg-danger rounded-circle text-center pt-2 mb-5" data-toggle="modal" data-target="#modalCreate" style="width: 3em;height: 3em;color: white;" idTask="0">
+    <i class="fa fa-plus fa-2x mx-auto" aria-hidden="true"></i>
+</div>
 
+    <div id="toolbar" class="rounded-left float-right  bg-secondary py-5 pl-3 pr-2" style="height:26vh;z-index: 10;   position: fixed;    right: 0;    top: 32vh;">
+        <div class="row h-100">
+            <div  id="archivage" class="mx-4 bg-warning rounded-circle text-center pt-2 my-auto" style="width: 3em;height: 3em;color: white;z-index: 10">
+                <i class="fa fa-archive fa-2x mx-auto" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
 
     <div id="taskContent" class="row text-light h-75">
         <div id="aFaire" class="col-md-3 mx-3">
@@ -20,7 +27,6 @@
             <h2 class="text-center mb-5">Terminé</h2>
         </div>
     </div>
-
 
     <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
