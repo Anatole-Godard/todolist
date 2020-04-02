@@ -82,7 +82,7 @@ $(document).ready(function () {
 
 });
 
-
+// Créer ou mettre à jour une tâche
 function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, statement) {
     let db = firebase.firestore();
 
@@ -164,6 +164,7 @@ $( "#toolbar" ).droppable({
             });
     }
 });
+
 
 $( "#aFaire" ).droppable({
     accept: ".terminer, .enCour",

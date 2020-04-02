@@ -27,6 +27,13 @@ $('.home').click(function () {
     });
 });
 
+// Quand on click sur le lien Accueil de la navBar
+$('.weekly').click(function () {
+    // On charge la page maintask dans la div contenu
+    $("#mainContent").load('includes/calendar.html');
+});
+
+
 // Quand on click sur le lien Tâches archivées de la navBar
 $('.archive').click(function () {
     // On charge la page archivedTask dans la div contenu
