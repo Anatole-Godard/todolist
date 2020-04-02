@@ -26,3 +26,13 @@ $('.home').click(function () {
         $('#mainSubTitle').html('Taches de '+name);
     });
 });
+
+// Quand on click sur le lien Tâches archivées de la navBar
+$('.archive').click(function () {
+    // On charge la page archivedTask dans la div contenu
+    $("#mainContent").load('includes/archivedTask.html',function () {
+        let name = localStorage.getItem('displayName');
+        // on injecte le titre de la page
+        $('#mainSubTitle').html('Taches Archivées de '+name);
+    });
+});
