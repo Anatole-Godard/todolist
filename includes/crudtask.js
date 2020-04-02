@@ -210,7 +210,7 @@ $( "#aFaire" ).droppable({
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true});
+                    $(".taskBlock").draggable({revert: true,scroll: false});
                 },500);
             })
             .catch(function (error) {
@@ -265,7 +265,7 @@ $( "#enCour" ).droppable({
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true});
+                    $(".taskBlock").draggable({revert: true,scroll: false});
                 },500);
             })
             .catch(function (error) {
@@ -322,7 +322,7 @@ $( "#terminer" ).droppable({
                 // on bout de 1s(1000ms)
                 setTimeout(function () {
                     // on rend draggable l'ajout dans la colonne
-                    $(".taskBlock").draggable({revert: true});
+                    $(".taskBlock").draggable({revert: true,scroll: false});
                 },500);
             })
             .catch(function (error) {

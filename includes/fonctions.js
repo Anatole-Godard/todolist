@@ -62,7 +62,13 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             $(taskdiv).append(card);
         });
         //Permet de rendre la carte draggable
-        if(tasktype!=="archivé") {$(".taskBlock").draggable({revert: true});}
+        if(tasktype!=="archivé") {
+            // on bout de 0.5s(500ms)
+            setTimeout(function () {
+                // on rend draggable l'ajout dans la colonne
+                $(".taskBlock").draggable({revert: true,scroll: false});
+            },500);
+        }
 
     });
     return true;
