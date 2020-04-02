@@ -1,62 +1,3 @@
-//READ
-
-//           readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
-//
-//description :
-//
-//Cette fonction permet de LIRE les taches en fonction de leur type et de l'USERID depuis une BDD.
-//Puis les affiches sous forme de CARTES dans la div indiquée.
-//Le template des taches est défini dans cette fonction.
-//
-//Paramètres :
-/*
-1 - Type_de_tache[String], le type de tache a afficher, obligatoire, chaine de caractères.
-2 - ID_de_div[String], l'ID de la div de destination, obligatoire, chaine de caractères. ' +
-3 - db[Object], la BDD source. (Firebase object)
-4 - idUser[String], l'ID de l'utilisateur dans la BDD
-*/
-function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
-    let addclass = taskdiv.substr(1,taskdiv.length-1);
-    let card;
-    let cardbody;
-    let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
-    let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3 '+addclass+'"';
-
-    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            //  construction du corps de la carte
-            cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
-                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
-                '<h4 class="card-title">' + doc.data().name + '</h4>' +
-                '<p class="card-text">' + doc.data().description + '</p>' +
-                '<p class="card-text float-right"><small>' + doc.data().date + '</small></p>' +
-                '</div>';
-            //construction du pied de carte
-            var cardfooter =
-                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
-                '<div class="row">' +
-                '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
-                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
-                '</div>' +
-                '<div class="mx-auto">' +
-                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
-                ' </div>' +
-                '<div class="mx-auto">' +
-                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-            //Assemblage de la carte.
-            card = cardbody + cardfooter;
-            //  Ajout de la carte à la Div "aFaire"
-            $(taskdiv).append(card);
-        });
-        //Permet de rendre la carte draggable
-        $(".taskBlock").draggable({revert: true});
-    });
-    return true;
-}
-
 //DELETE
 function deletetask(taskid) {
     let tid = String(taskid);
@@ -73,10 +14,6 @@ function deletetask(taskid) {
             console.error("Error when deleting task: ", error);
         });
 }
-//Execution du templates pour les taches ( à faire, En cours, Terminé).
-readTaskCreateCard("à faire", "#aFaire", db, idUser);
-readTaskCreateCard("en cours", "#enCour", db, idUser);
-readTaskCreateCard("terminé", "#terminer", db, idUser);
 
 
 //Document Ready !! C'est parti !
@@ -93,7 +30,7 @@ $(document).ready(function () {
         //récupère le Id de la dernière tâche créé par l'utilisateur connécté
         db.collection("user").doc(idUser).get().then(function (doc) {
             console.log(doc.data().nbTask + 1);
-             lastTask = doc.data().nbTask + 1;
+            lastTask = doc.data().nbTask + 1;
             console.log(lastTask);
 
             //récupère les valeurs des inputs
@@ -121,6 +58,127 @@ $(document).ready(function () {
     });
 
 
+//READ
+    let card;
+    let cardbody;
+    let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
+    let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3"';
+    //LECTURE ET AFFICHAGE TACHES A FAIRE
+    // récupère les taches à faire de l'utilisateur connecté
+    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "à faire").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            //  construction du corps de la carte
+            cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
+                '<h4 class="card-title name">' + doc.data().name + '</h4>' +
+                '<p class="card-text description">' + doc.data().description + '</p>' +
+                '<p class="card-text date float-right"><small>' + doc.data().date + '</small></p>' +
+                '<p class="card-text statement d-none">' + doc.data().statement + '</p>' +
+                '<p class="card-text datereminder d-none">' + doc.data().datereminder + '</p>' +
+                '<p class="card-text category d-none">' + doc.data().category + '</p>' +
+                '<p class="card-text creationdate d-none">' + doc.data().creationdate + '</p>' +
+                '</div>';
+            //construction du pied de carte
+            var cardfooter =
+                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                '<div class="row">' +
+                '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            //Assemblage de la carte.
+            card = cardbody + cardfooter;
+            //  Ajout de la carte à la Div "aFaire"
+            $("#aFaire").append(card);
+        });
+        //Permet de rendre la carte draggable
+        $(".taskBlock").draggable({revert: true});
+    });
+
+    //LECTURE ET AFFICHAGE des taches en cours
+    // récupère les taches en cours de l'utilisateur connecté
+    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "en cours").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            //construction du corps de la carte
+            cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate"">' +
+                '<h4 class="card-title name">' + doc.data().name + '</h4>' +
+                '<p class="card-text description">' + doc.data().description + '</p>' +
+                '<p class="card-text date float-right"><small>' + doc.data().date + '</small></p>' +
+                '<p class="card-text statement d-none">' + doc.data().statement + '</p>' +
+                '<p class="card-text datereminder d-none">' + doc.data().datereminder + '</p>' +
+                '<p class="card-text category d-none">' + doc.data().category + '</p>' +
+                '<p class="card-text creationdate d-none">' + doc.data().creationdate + '</p>' +
+                '</div>';
+            //construction du pied de carte
+            var cardfooter =
+                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                '<div class="row">' +
+                '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            //Assemblage de la carte.
+            card = cardbody + cardfooter;
+            //  Ajout de la carte à la Div "enCour"
+            $("#enCour").append(card);
+        });
+        //Permet de rendre la carte draggable
+        $(".taskBlock").draggable({revert: true});
+    });
+
+    //LECTURE ET AFFICHAGE des taches terminées
+    // récupère les taches terminées de l'utilisateur connecté
+    db.collection("user").doc(idUser).collection('tasks').where("statement", "==", "terminé").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // construction du corps de la carte
+            cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
+                '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate">' +
+                '<h4 class="card-title name">' + doc.data().name + '</h4>' +
+                '<p class="card-text description">' + doc.data().description + '</p>' +
+                '<p class="card-text date float-right"><small>' + doc.data().date + '</small></p>' +
+                '<p class="card-text statement d-none ">' + doc.data().statement + '</p>' +
+                '<p class="card-text datereminder d-none">' + doc.data().datereminder + '</p>' +
+                '<p class="card-text category d-none">' + doc.data().category + '</p>' +
+                '<p class="card-text creationdate d-none">' + doc.data().creationdate + '</p>' +
+                '</div>';
+            //construction du pied de carte
+            var cardfooter =
+                '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
+                '<div class="row">' +
+                '<div onclick="deletetask(' + doc.id + ')" ' + mouseover + ' class="mx-auto">' +
+                '<i class="fa fa-trash-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-clock-o" aria-hidden="true"></i>' +
+                ' </div>' +
+                '<div class="mx-auto">' +
+                '<i class="fa fa-calendar-o" aria-hidden="true"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            //Assemblage de la carte.
+            card = cardbody + cardfooter;
+            //  Ajout de la carte à la Div "terminer"
+            $("#terminer").append(card);
+        });
+        //Permet de rendre la carte draggable
+        $(".taskBlock").draggable({revert: true});
+    });
 
 
     // Mise à jour d'une tache
