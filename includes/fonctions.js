@@ -30,6 +30,20 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     // $(taskdiv).empty();
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+            let collabOnTask = doc.data().collabOnTask;
+
+            if (collabOnTask !== undefined) {
+                if (collabOnTask.length !== 0){
+                    collabOnTask.forEach(idCollab => {
+                        db.collection("user").doc(idCollab).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                            let photoURL = querySnapshot.data().photoURL;
+                            let pseudo = querySnapshot.data().pseudo;
+                            $('#'+doc.id).append("<img title='"+pseudo+"' src=\""+photoURL+"\" style=\"max-width: 2em;\" class=\"rounded-circle float-right mr-2\" alt=\"\">");
+                        })
+                    })
+                }
+            }
+
             //  construction du corps de la carte
             cardbody = '<div id="cardTID_' + doc.id + '" ' + classdiv + ' style="max-width: 20rem;">' +
                 '<div class="card-body" id="' + doc.id + '" data-toggle="modal" data-target="#modalUpdate">' +
