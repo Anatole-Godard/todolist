@@ -1,10 +1,83 @@
 //Document Ready !! C'est parti !
+var collabOnTask = [];
+
+function addTaskCollab(idTask, idUser, collabList, idCollabAdd) {
+    console.log(idTask);
+    console.log(idUser);
+    console.log(collabList);
+    console.log(idCollabAdd);
+    var db = firebase.firestore();
+    db.collection("user").doc(idUser).collection('tasks').doc(idTask).get().then((querySnapshot) => {
+        let name = querySnapshot.data().name;
+        let description = querySnapshot.data().description;
+        let statement = querySnapshot.data().statement;
+        let datereminder = querySnapshot.data().datereminder;
+        let category = querySnapshot.data().category;
+        let creationdate = querySnapshot.data().creationdate;
+        let date = querySnapshot.data().date;
+        let collabOnTask = querySnapshot.data().collabOnTask;
+
+        if (collabOnTask !== undefined) {
+            if (collabOnTask.length === 0){
+                collabOnTask=[];
+            }
+        } else {
+            collabOnTask=[];
+        }
+        collabOnTask.push(idCollabAdd);
+        db.collection("user").doc(idUser).collection('tasks').doc(idTask).update({
+            collabOnTask:collabOnTask
+        });
+
+        db.collection("user").doc(idCollabAdd).get().then((querySnapshot) => {
+            let lastTask = querySnapshot.data().nbTask+1;
+            setTaskCollab(idCollabAdd, lastTask, name, description, date, datereminder, category, creationdate, statement, collabList);
+            db.collection("user").doc(idCollabAdd).set({
+                nbTask: lastTask
+            });
+            console.log('crée !');
+        });
+    });
+}
+
+function removeTaskCollab(idTask, idUser, idCollabRemove) {
+    console.log(idTask);
+    console.log(idUser);
+    console.log(idCollabRemove);
+    var db = firebase.firestore();
+    db.collection("user").doc(idUser).collection('tasks').doc(idTask).get().then((querySnapshot) => {
+        let creationdate = querySnapshot.data().creationdate;
+        let collabOnTask = querySnapshot.data().collabOnTask;
+        let taskstatus = 'supprimé';
+
+        for (let i = 0;i<collabOnTask.length;i++){
+            if (collabOnTask[i] === idCollabRemove){
+                // on supprime l'id de notre tableau
+                collabOnTask.splice(i,1);
+            }
+        }
+        db.collection("user").doc(idUser).collection('tasks').doc(idTask).update({
+            collabOnTask:collabOnTask
+        });
+
+        db.collection("user").doc(idCollabRemove).collection('tasks').where("creationdate", "==", creationdate).get().then(response => {
+                console.log(response);
+                response.docs.forEach((doc) => {
+                    db.collection("user").doc(idCollabRemove).collection('tasks').doc(doc.id).update({
+                            statement: taskstatus
+                    }).then(function () {
+                        console.log('supprimé');
+                    })
+                });
+        });
+    });
+}
 
 $(document).ready(function () {
     // on récupère l'id de l'utilisateur qui se trouve en cache 'localStorage'
     var idUser = localStorage.getItem('user');
-
     var db = firebase.firestore();
+
     readTaskCreateCard("à faire", "#aFaire", db, idUser);
     readTaskCreateCard("en cours", "#enCour", db, idUser);
     readTaskCreateCard("terminé", "#terminer", db, idUser);
@@ -29,7 +102,7 @@ $(document).ready(function () {
             let now = new Date();
 
             //Créer ma nouvelle tâche
-            $.when(setTask(idUser, lastTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, 'à faire'))
+            $.when(setTask(idUser, lastTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, 'à faire', collabOnTask))
                 .done(function () {
                     //une fois créée on incrémente en base le champ qui compte le nombre de tâches créé par l'utilisateur
                     db.collection("user").doc(idUser).set({
@@ -46,9 +119,138 @@ $(document).ready(function () {
 
     // Mise à jour d'une tache
     $("#modalUpdate").on('show.bs.modal', function (data) {
-        var idUser = localStorage.getItem('user');
-
+        // on initialise la variable
+        collabOnTask = [];
         let cardtid = data.relatedTarget.id;
+
+        $('#listCollab').html('<div class="spinner-border text-danger" role="status">\n' +
+            '  <span class="sr-only">Loading...</span>\n' +
+            '</div>' +
+            '<p class="text-light">Chargement...</p>');
+        let uid = localStorage.getItem('user');
+        db.collection("user").doc(uid).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+            let arrayCollab = querySnapshot.data().myCollab;
+            if (arrayCollab !== undefined) {
+                if (arrayCollab.length > 0) {
+                    let listCollab = [];
+
+                    for (let i = 0;i<arrayCollab.length;i++){
+                        listCollab.push(arrayCollab[i]);
+                    }
+                    $("#listCollab").html('');
+                    listCollab.forEach(idUser => {
+                        db.collection("user").doc(idUser).collection('userInfo').doc('userInfo').get().then((querySnapshot) => {
+                            let photoURL = querySnapshot.data().photoURL;
+                            let pseudo = querySnapshot.data().pseudo;
+
+                            db.collection("user").doc(uid).collection('tasks').doc(cardtid).get().then((querySnapshot) => {
+                                let taskCollab = querySnapshot.data().collabOnTask;
+                                if (taskCollab !== undefined) {
+                                    if (taskCollab.length === 0) {
+                                        // On définie l'element html
+                                        var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                            '<div class="col-2 ml-3 p-0 pt-1">' +
+                                            '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                            '</div>' +
+                                            '<div class="col-9">' +
+                                            '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                            '</div>' +
+                                            '</div>';
+                                    } else {
+                                        let indic = 0;
+                                        for (let i = 0;i<taskCollab.length;i++){
+                                            if (taskCollab[i] === idUser){
+                                                indic =1;
+                                                // On définie l'element html
+                                                var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-success" style="z-index: 1;">' +
+                                                    '<div class="col-2 ml-3 p-0 pt-1">' +
+                                                    '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                                    '</div>' +
+                                                    '<div class="col-9">' +
+                                                    '<p class="text-light mb-2 pt-2">'+pseudo+'</p>' +
+                                                    '</div>' +
+                                                    '</div>';
+                                                collabOnTask.push(idUser);
+                                            }
+                                        }
+                                        if(indic === 0) {
+                                            // On définie l'element html
+                                            var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                                '<div class="col-2 ml-3 p-0 pt-1">' +
+                                                '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                                '</div>' +
+                                                '<div class="col-9">' +
+                                                '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                                '</div>' +
+                                                '</div>';
+                                        }
+                                    }
+                                } else {
+                                    // On définie l'element html
+                                    var cardUser = '<div id="'+idUser+'" class="userCollab my-1 col-md-6 border border-danger row p-0 m-0 bg-light" style="z-index: 1;">' +
+                                        '<div class="col-2 ml-3 p-0 pt-1">' +
+                                        '<img id=\'imgNavbar\' src="'+photoURL+'" style="max-width: 2em;" class="rounded-circle mr-2" alt="">' +
+                                        '</div>' +
+                                        '<div class="col-9">' +
+                                        '<p class="text-primary mb-2 pt-2">'+pseudo+'</p>' +
+                                        '</div>' +
+                                        '</div>';
+
+                                }
+                                // on injecte l'element html a la liste des utilisateurs
+                                $("#listCollab").append(cardUser);
+                                $('#'+idUser).click(function () {
+                                    console.log($(this)[0].id);
+                                    $(this).toggleClass('bg-light').toggleClass('bg-success').find('p').toggleClass('text-primary').toggleClass('text-light');
+                                    let idCollab = $(this)[0].id;
+                                    if (collabOnTask.length > 0) {
+                                        let collabInArray = 0;
+                                        for (let i = 0;i<collabOnTask.length;i++){
+                                            if (collabOnTask[i] === idCollab){
+                                                collabInArray = 1;
+                                                // on supprime l'id de notre tableau
+                                                collabOnTask.splice(i,1);
+
+                                            }
+                                        }
+                                        if (collabInArray === 0){
+                                            collabOnTask.push(idCollab);
+
+                                            let collabList = [];
+                                            collabOnTask.forEach(id => {
+                                                if (id !== idUser || id !== idUser){
+                                                    collabList.push(id);
+                                                }
+                                            });
+                                            collabList.push(idUser);
+                                            addTaskCollab(cardtid, uid, collabList, idCollab);
+                                        } else {
+                                            removeTaskCollab(cardtid, uid, idCollab);
+                                        }
+                                    } else {
+                                        collabOnTask.push(idCollab);
+
+                                        let collabList = [];
+                                        collabOnTask.forEach(id => {
+                                            if (id !== idUser || id !== idUser){
+                                                collabList.push(id);
+                                            }
+                                        });
+                                        collabList.push(idUser);
+                                        addTaskCollab(cardtid, uid, collabList, idCollab);
+                                    }
+                                });
+                            });
+                        });
+                    })
+                } else {
+                    $("#listCollab").html('<p class="text-light">Vous n\'avez aucun collaborateurs, veuillez les renseigner dans votre profil.</p>');
+                }
+            }
+        });
+
+
+        var idUser = localStorage.getItem('user');
 
         let title = $("#cardTID_" + cardtid + " .name").html();
         let description = $("#cardTID_" + cardtid + " .description").html();
@@ -75,15 +277,14 @@ $(document).ready(function () {
             let newcategory = $('#categoryUpdate').val();
             let newstatement = $('#statementUpdate').val();
 
-            setTask(idUser, cardtid, newtitle, newdescription, newdate, newdatereminder, newcategory, creationdate, newstatement);
+            setTask(idUser, cardtid, newtitle, newdescription, newdate, newdatereminder, newcategory, creationdate, newstatement, collabOnTask);
         })
 
     });
 
 });
-
-// Créer ou mettre à jour une tâche
-function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, statement) {
+function setTaskCollab(idUser, idTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, statement, collabOnTask) {
+    console.log(collabOnTask);
     let db = firebase.firestore();
 
     //créer notre nouvelle tâche avec les valeurs données
@@ -94,7 +295,30 @@ function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremind
         datereminder: dateremindertask,
         category: categorytask,
         creationdate: now,
-        statement: statement
+        statement: statement,
+        collabOnTask: collabOnTask
+    })
+        .catch(function (error) {
+            //log les erreurs dans la console
+            console.error("Error adding document: ", error);
+        });
+}
+
+// Créer ou mettre à jour une tâche
+function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremindertask, categorytask, now, statement, collabOnTask) {
+    console.log(collabOnTask);
+    let db = firebase.firestore();
+
+    //créer notre nouvelle tâche avec les valeurs données
+    db.collection("user").doc(idUser).collection('tasks').doc(idTask.toString()).set({
+        name: nameTask,
+        description: descriptiontask,
+        date: datetask,
+        datereminder: dateremindertask,
+        category: categorytask,
+        creationdate: now,
+        statement: statement,
+        collabOnTask: collabOnTask
     })
 
         .then(function () {
