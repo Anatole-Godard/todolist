@@ -15,6 +15,15 @@ function addTaskCollab(idTask, idUser, collabList, idCollabAdd) {
         let category = querySnapshot.data().category;
         let creationdate = querySnapshot.data().creationdate;
         let date = querySnapshot.data().date;
+        let collabOnTask = querySnapshot.data().collabOnTask;
+
+        if (collabOnTask !== undefined) {
+            if (collabOnTask.length === 0){
+                collabOnTask=[];
+            }
+        } else {
+            collabOnTask=[];
+        }
         collabOnTask.push(idCollabAdd);
         db.collection("user").doc(idUser).collection('tasks').doc(idTask).update({
             collabOnTask:collabOnTask
