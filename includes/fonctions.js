@@ -22,7 +22,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3 '+addclass+'"';
     let iconecorbeille = 'fa fa-trash-o' ;
     let modaltype = "#modalDelete" ;
-    if(tasktype==="supprimé") {
+    if(tasktype==="archivé") {
 
         iconecorbeille = 'fa fa-arrow-circle-up';
         modaltype = "#modalUnarchive" ;
@@ -62,7 +62,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             $(taskdiv).append(card);
         });
         //Permet de rendre la carte draggable
-        if(tasktype!=="supprimé") {$(".taskBlock").draggable({revert: true});}
+        if(tasktype!=="archivé") {$(".taskBlock").draggable({revert: true});}
 
     });
     return true;
