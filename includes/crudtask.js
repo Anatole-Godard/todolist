@@ -271,7 +271,7 @@ $(document).ready(function () {
         $("#Update").click(function () {
 
             let newtitle = $('#nameUpdate').val();
-            let newdescription = $('#descriptionUpdate').html();
+            let newdescription = $('#descriptionUpdate').val();
             let newdate = $('#dateUpdate').val();
             let newdatereminder = $('#datereminderUpdate').val();
             let newcategory = $('#categoryUpdate').val();
