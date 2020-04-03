@@ -27,6 +27,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
         modaltype = "#modalUnarchive" ;
     }
     // $(taskdiv).empty();
+
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let collabOnTask = doc.data().collabOnTask;

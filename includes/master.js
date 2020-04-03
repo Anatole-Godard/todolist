@@ -23,7 +23,7 @@ $('.home').click(function () {
     $("#mainContent").load('includes/mainTask.html',function () {
         let name = localStorage.getItem('displayName');
         // on injecte le titre de la page
-        $('#mainSubTitle').html('Taches de '+name);
+        $('#mainSubTitle').html('T&acirc;ches de '+name);
     });
 });
 
@@ -40,6 +40,6 @@ $('.archive').click(function () {
     $("#mainContent").load('includes/archivedTask.html',function () {
         let name = localStorage.getItem('displayName');
         // on injecte le titre de la page
-        $('#mainSubTitle').html('Taches Archivées de '+name);
+        $('#mainSubTitle').html('T&acirc;ches Archiv&eacute;es de '+name);
     });
 });

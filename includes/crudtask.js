@@ -278,7 +278,7 @@ $(document).ready(function () {
             let newstatement = $('#statementUpdate').val();
 
             setTask(idUser, cardtid, newtitle, newdescription, newdate, newdatereminder, newcategory, creationdate, newstatement, collabOnTask);
-        })
+    })
 
     });
 
@@ -330,7 +330,8 @@ function setTask(idUser, idTask, nameTask, descriptiontask, datetask, dateremind
             //recharchement de la page
             $("#mainContent").load('includes/mainTask.html', function () {
                 // on injecte le titre de la page
-                $('#mainSubTitle').html('Taches de ' + name);
+                let name = localStorage.getItem('displayName');
+                $('#mainSubTitle').html('T&acirc;ches de ' + name);
             });
 
         })
