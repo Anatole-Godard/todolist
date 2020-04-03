@@ -114,7 +114,7 @@ function updateTaskStatus(taskid, taskstatus) {
     //changement du statement en base + supprime de l'affichage
     db.collection("user").doc(idUser).collection('tasks').doc(tid).update({statement: taskstatus})
         .then(function () {
-            $("#cardTID_" + taskid).remove();
+            $("#cardTID_" + taskid).fadeOut().remove();
         })
         .catch(function (error) {
             //log les erreurs dans la console

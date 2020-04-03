@@ -19,7 +19,12 @@ $("#modalUnarchive").on('show.bs.modal', function (data) {
         $("#modalUnarchive").attr('class', 'modal fade').attr('style', 'display: none;').attr('aria-hidden', 'true');
         $("body").attr('class', '');
         $(".modal-backdrop").remove();
-
+        // On recharge la page archivedTask dans la div contenu
+        $("#mainContent").load('includes/archivedTask.html',function () {
+            let name = localStorage.getItem('displayName');
+            // on injecte le titre de la page
+            $('#mainSubTitle').html('T&acirc;ches Archiv&eacute;es de '+name);
+        });
     });
 
 });
