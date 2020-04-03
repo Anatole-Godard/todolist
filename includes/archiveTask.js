@@ -3,7 +3,9 @@ var idUser = localStorage.getItem('user');
 var db = firebase.firestore();
 
 readTaskCreateCard("archivé", "#archiver", db, idUser);
-
+setTimeout(function () {
+    $('.taskBlock').addClass('col-md-3');
+},200);
 //SUPPRIMER UNE TACHE
 $("#modalUnarchive").on('show.bs.modal', function (data) {
     let db = firebase.firestore();
