@@ -20,3 +20,17 @@
 .textActive {
     color: #4de162;
 }
+
+
+.tui-full-calendar-weekday-schedule{
+    background-color: #dc3545;
+    color: white!important;
+    border: 1px solid black!important;
+}
+
+.tui-full-calendar-weekday-schedule-title {
+    color: white!important;
+}
+.tui-full-calendar-weekday-schedule-bullet{
+    background-color: white!important;
+}

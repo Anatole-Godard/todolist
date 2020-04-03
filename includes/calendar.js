@@ -1,14 +1,14 @@
 $(document).ready(function () {
     var calendar = new tui.Calendar(document.getElementById('calendar'), {
         calendarId: '1',
-        defaultView: 'week',
+        defaultView: 'month',
         taskView: false,
         scheduleView: true,
         useCreationPopup: false,
         useDetailPopup: true,
         template: {
             time: function (schedule) {
-                return schedule.title + ' <i class="fa fa-refresh"></i>' + schedule.start;
+                return schedule.title + ' :  ' + schedule.body;
             },
             popupDetailRepeat: function (schedule) {
                 return 'Repeat : ' + schedule.recurrenceRule;
@@ -22,12 +22,12 @@ $(document).ready(function () {
 
         },
         month: {
-            daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            startDayOfWeek: 0,
+            daynames: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            startDayOfWeek: 1,
             narrowWeekend: true
         }, week: {
-            daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            startDayOfWeek: 0,
+            daynames: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            startDayOfWeek: 1,
             narrowWeekend: true
         }
     });
@@ -43,30 +43,32 @@ $(document).ready(function () {
         .then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
 
-                console.log(doc.id, " => ", doc.data());
+                let statement = doc.data().statement;
 
-                datenewdate = moment(doc.data().date);
-                console.log(doc.data().date);
-                console.log(datenewdate.format());
+                if (doc.data().date !== '') {
 
-                if (datenewdate.format !== 'Invalid date') {
-                    datenewdate = datenewdate.format();
+                    if (!(statement === 'supprimé' || statement === 'archivé')) {
 
+                        datenewdate = moment(doc.data().date).format();
 
-                    calendar.createSchedules([
-                        {
-                            id: doc.id,
-                            calendarId: '1',
-                            title: doc.data().name,
-                            body: doc.data().description,
-                            category: 'time',
-                            dueDateClass: '',
-                            goingDuration: 120,
-                            start: datenewdate,
-                            bgColor: '#dc3545',
-                            dragBgColor: '#dc3545'
-                        },
-                    ])
+                        console.log(doc.data().statement);
+
+                        calendar.createSchedules([
+                            {
+                                id: doc.id,
+                                calendarId: '1',
+                                title: doc.data().name,
+                                body: doc.data().description,
+                                category: 'time',
+                                dueDateClass: '',
+                                goingDuration: 120,
+                                start: datenewdate,
+                                borderColor: '#000000',
+                                bgColor: '#dc3545',
+                                dragBgColor: '#dc3545'
+                            },
+                        ])
+                    }
                 }
             });
         })
@@ -88,7 +90,8 @@ $(document).ready(function () {
 
     $.ajax(settings).done(function (response) {
         for (let i = 0; i < response.length; i++) {
-            response[i].date
+
+            datenewdate = moment(response[i].date).format();
 
             calendar.createSchedules([
                 {
@@ -98,7 +101,6 @@ $(document).ready(function () {
                     body: response[i].localName,
                     category: 'allday',
                     isAllDay: true,
-                    goingDuration: 120,
                     start: datenewdate,
                     bgColor: '#133154',
                     dragBgColor: '#dc3545'
@@ -107,17 +109,17 @@ $(document).ready(function () {
         }
     });
 
-    $('.js-calendar-next').on('click', function() {
+    $('.js-calendar-next').on('click', function () {
         calendar.next();
         setCalendarTitleText();
     });
 
-    $('.js-calendar-prev').on('click', function() {
+    $('.js-calendar-prev').on('click', function () {
         calendar.prev();
         setCalendarTitleText();
     });
 
-    $('.js-calendar-today').on('click', function() {
+    $('.js-calendar-today').on('click', function () {
         calendar.today();
         setCalendarTitleText();
     });
