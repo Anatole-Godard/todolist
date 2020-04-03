@@ -13,7 +13,7 @@ $("#account").click(function () {
         $('#imgProfile').attr('src',firebase.auth().currentUser.photoURL);
 
         // On ajoute le button de deconnection
-        $('#Deco').append("<i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Déconnection");
+        $('#Deco').append("<i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Déconnexion");
     });
 });
 
