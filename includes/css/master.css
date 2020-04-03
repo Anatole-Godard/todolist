@@ -22,8 +22,7 @@
 }
 
 
-.tui-full-calendar-weekday-schedule{
-    background-color: #dc3545;
+.calendar span{
     color: white!important;
     border: 1px solid black!important;
 }

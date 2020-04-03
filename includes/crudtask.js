@@ -117,7 +117,7 @@ $(document).ready(function () {
         })
     });
 
-    // Mise à jour d'une tache
+    // Mise à jour d'une tâche
     $("#modalUpdate").on('show.bs.modal', function (data) {
         // on initialise la variable
         collabOnTask = [];
@@ -370,7 +370,7 @@ $( "#toolbar" ).droppable({
         let statut = 'archivé';
         let idUser = firebase.auth().currentUser.uid;
 
-        // on recupere l'id de la tache
+        // on recupere l'id de la tâche
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
 
         // on hide la div
@@ -402,7 +402,7 @@ $( "#aFaire" ).droppable({
         let classNewStatut = 'aFaire';
         let idUser = firebase.auth().currentUser.uid;
 
-        // on recupere l'id de la tache
+        // on recupere l'id de la tâche
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
 
         // on recupere les class
@@ -457,7 +457,7 @@ $( "#enCour" ).droppable({
         let classNewStatut = 'enCour';
         let idUser = firebase.auth().currentUser.uid;
 
-        // on recupere l'id de la tache
+        // on recupere l'id de la tâche
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
         // on hide la div
         $("#cardTID_" + taskid).hide();
@@ -514,7 +514,7 @@ $( "#terminer" ).droppable({
         let classNewStatut = 'terminer';
         let idUser = firebase.auth().currentUser.uid;
 
-       // on recupere l'id de la tache
+       // on recupere l'id de la tâche
         let taskid= ui.draggable.prop('id').substr(8,ui.draggable.prop('id').length);
         // on hide la div
         $("#cardTID_" + taskid).hide();

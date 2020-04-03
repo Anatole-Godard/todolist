@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     var calendar = new tui.Calendar(document.getElementById('calendar'), {
         calendarId: '1',
         defaultView: 'month',
@@ -9,6 +8,7 @@ $(document).ready(function () {
         useCreationPopup: false,
         useDetailPopup: true,
         template: {
+
             time: function (schedule) {
                 return schedule.title + ' :  ' + schedule.body;
             },
@@ -46,29 +46,35 @@ $(document).ready(function () {
             querySnapshot.forEach(function (doc) {
 
                 let statement = doc.data().statement;
+                let Taskcategory = doc.data().category;
 
                 if (doc.data().date !== '') {
 
                     if (!(statement === 'supprimé' || statement === 'archivé')) {
+                        switch (Taskcategory) {
+                            case 'loisir':
 
-                        datenewdate = moment(doc.data().date).format();
+                                templateSchedule(calendar, doc, 'loisir');
+                                break;
+                            case 'perso':
 
+                                templateSchedule(calendar, doc, 'perso');
+                                break;
+                            case 'Travail':
 
-                        calendar.createSchedules([
-                            {
-                                id: doc.id,
-                                calendarId: '1',
-                                title: doc.data().name,
-                                body: doc.data().description,
-                                category: 'time',
-                                dueDateClass: '',
-                                goingDuration: 120,
-                                start: datenewdate,
-                                borderColor: '#000000',
-                                bgColor: '#dc3545',
-                                dragBgColor: '#dc3545'
-                            },
-                        ])
+                                templateSchedule(calendar, doc, 'Travail');
+                                break;
+                            case 'anniversaire':
+
+                                templateSchedule(calendar, doc, 'anniversaire');
+                                break;
+                            case 'sport':
+
+                                templateSchedule(calendar, doc, 'sport');
+                                break;
+                            default:
+                                console.log('Sorry, we are out of ' + expr + '.');
+                        }
                     }
                 }
             });
@@ -76,6 +82,7 @@ $(document).ready(function () {
         .catch(function (error) {
             console.log("Error getting documents: ", error);
         });
+
 
     getMyCalendarMonth(calendar);
 
@@ -94,20 +101,19 @@ $(document).ready(function () {
         for (let i = 0; i < response.length; i++) {
 
             datenewdate = moment(response[i].date).format();
-            console.log(response[i].localName);
-            console.log(datenewdate);
 
             calendar.createSchedules([
                 {
                     id: response[i].localName,
                     calendarId: '1',
-                    title: 'Jour férier',
+                    title: 'Jour férié',
                     body: response[i].localName,
-                    category: 'task',
                     start: datenewdate,
+                    category: 'milestone',
+                    color: "#ffffff",
                     bgColor: '#133154',
-                    dragBgColor: '#dc3545',
-                    color:"#ffffff!important",
+                    dragBgColor: '#133154',
+
                 },
             ])
         }
@@ -133,12 +139,37 @@ $(document).ready(function () {
 
 });
 
+function templateSchedule(calendar, doc, color) {
 
-function getMyCalendarMonth(calendar){
+    datenewdate = moment(doc.data().date).format();
+
+    var colorhexa = $("span .bg-" + color).css("background-color");
+
+            calendar.createSchedules([
+            {
+                id: doc.id,
+                calendarId: '1',
+                title: doc.data().name,
+                body: doc.data().description,
+                category: 'task',
+                goingDuration: 120,
+                start: datenewdate,
+                dueDateClass: '',
+                color: "#ffffff",
+                bgColor: colorhexa,
+                dragBgColor: '#dc3545',
+
+            },
+        ])
+
+
+}
+
+function getMyCalendarMonth(calendar) {
 
     month = new Date(calendar.getDate());
 
-    let options = { month: 'long'};
+    let options = {month: 'long'};
     formatedMonth = month.toLocaleDateString('fr', options);
 
     $(".current-month-in-calendar").html(formatedMonth);

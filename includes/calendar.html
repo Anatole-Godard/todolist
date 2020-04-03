@@ -1,7 +1,14 @@
-
-<div class="d-flex flex-row align-content-center" id="menu">
+<div class="d-flex flex-row justify-content-between" id="menu">
       <span id="menu-navi ">
-        <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-today" data-action="move-today">Today</button>
+          <div class="text-center mb-3">
+            <span class="badge badge-pill bg-perso">Personnelle</span>
+            <span class="badge badge-pill bg-Travail">Travail</span>
+            <span class="badge badge-pill bg-anniversaire">Anniversaire</span>
+            <span class="badge badge-pill bg-loisir">Loisir</span>
+            <span class="badge badge-pill bg-sport">Sport</span>
+          </div>
+        <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-today"
+                data-action="move-today">Today</button>
         <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-prev" data-action="move-prev">
           &lt;
         </button>
@@ -10,7 +17,7 @@
         </button>
 
       </span>
-    <h2 class="current-month-in-calendar text-light"></h2>
+    <h1 class="current-month-in-calendar text-light"></h1>
     <span id="renderRange" class="render-range"></span>
 </div>
 
