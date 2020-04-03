@@ -19,7 +19,6 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     let card;
     let cardbody;
     let mouseover = 'onmouseover="this.style.color = \'black\';this.style.cursor = \'pointer\'" onmouseout="this.style.color = \'white\'"';
-    let classdiv = 'class="mx-auto taskBlock card text-white bg-danger mb-3 '+addclass+'"';
     let iconecorbeille = 'fa fa-trash-o' ;
     let modaltype = "#modalDelete" ;
     if(tasktype==="archivé") {
@@ -31,6 +30,8 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
     db.collection("user").doc(idUser).collection('tasks').where("statement", "==", tasktype).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let collabOnTask = doc.data().collabOnTask;
+            let classCategorie = 'bg-'+doc.data().category;
+            let classdiv = 'class="mx-auto taskBlock card text-white mb-3 '+ classCategorie + ' ' + addclass+'"';
 
             if (collabOnTask !== undefined) {
                 if (collabOnTask.length !== 0){

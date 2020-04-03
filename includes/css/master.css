@@ -42,3 +42,28 @@
 .tui-full-calendar-section-button{
     display: none;
 }
+
+.bg-perso {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.bg-Travail {
+    background-color: #00ffcc!important;
+    color: black!important;
+}
+
+.bg-anniversaire {
+    background-color: #ff5900;
+    color: #fff;
+}
+
+.bg-loisir {
+    background-color: #30178d;
+    color: #fff;
+}
+
+.bg-sport {
+    background-color: #0022ff;
+    color: #fff;
+}
