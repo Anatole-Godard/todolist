@@ -1,6 +1,6 @@
 
-<div id="menu">
-      <span id="menu-navi">
+<div class="d-flex flex-row align-content-center" id="menu">
+      <span id="menu-navi ">
         <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-today" data-action="move-today">Today</button>
         <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-prev" data-action="move-prev">
           &lt;
@@ -8,12 +8,12 @@
         <button type="button" class="btn btn-danger bg-danger btn-sm js-calendar-next" data-action="move-next">
           &gt;
         </button>
+
       </span>
+    <h2 class="current-month-in-calendar text-light"></h2>
     <span id="renderRange" class="render-range"></span>
 </div>
 
 <div id="calendar"></div>
-
-
 
 <script src="includes/calendar.js"></script>

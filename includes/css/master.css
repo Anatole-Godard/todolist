@@ -28,7 +28,7 @@
     border: 1px solid black!important;
 }
 
-.tui-full-calendar-weekday-schedule-title {
+.tui-full-calendar-weekday-schedule-title , .tui-full-calendar-weekday-schedule-title{
     color: white!important;
 }
 .tui-full-calendar-weekday-schedule-bullet{

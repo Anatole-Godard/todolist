@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     var calendar = new tui.Calendar(document.getElementById('calendar'), {
         calendarId: '1',
         defaultView: 'month',
@@ -51,7 +53,6 @@ $(document).ready(function () {
 
                         datenewdate = moment(doc.data().date).format();
 
-                        console.log(doc.data().statement);
 
                         calendar.createSchedules([
                             {
@@ -76,6 +77,7 @@ $(document).ready(function () {
             console.log("Error getting documents: ", error);
         });
 
+    getMyCalendarMonth(calendar);
 
     var settings = {
         "async": true,
@@ -92,6 +94,8 @@ $(document).ready(function () {
         for (let i = 0; i < response.length; i++) {
 
             datenewdate = moment(response[i].date).format();
+            console.log(response[i].localName);
+            console.log(datenewdate);
 
             calendar.createSchedules([
                 {
@@ -99,11 +103,11 @@ $(document).ready(function () {
                     calendarId: '1',
                     title: 'Jour férier',
                     body: response[i].localName,
-                    category: 'allday',
-                    isAllDay: true,
+                    category: 'task',
                     start: datenewdate,
                     bgColor: '#133154',
-                    dragBgColor: '#dc3545'
+                    dragBgColor: '#dc3545',
+                    color:"#ffffff!important",
                 },
             ])
         }
@@ -112,15 +116,30 @@ $(document).ready(function () {
     $('.js-calendar-next').on('click', function () {
         calendar.next();
         // setCalendarTitleText();
+        getMyCalendarMonth(calendar)
     });
 
     $('.js-calendar-prev').on('click', function () {
         calendar.prev();
         // setCalendarTitleText();
+        getMyCalendarMonth(calendar)
     });
 
     $('.js-calendar-today').on('click', function () {
         calendar.today();
+        getMyCalendarMonth(calendar)
         // setCalendarTitleText();
     });
+
 });
+
+
+function getMyCalendarMonth(calendar){
+
+    month = new Date(calendar.getDate());
+
+    let options = { month: 'long'};
+    formatedMonth = month.toLocaleDateString('fr', options);
+
+    $(".current-month-in-calendar").html(formatedMonth);
+}
