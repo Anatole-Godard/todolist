@@ -218,11 +218,11 @@ $(document).ready(function () {
 
                                             let collabList = [];
                                             collabOnTask.forEach(id => {
-                                                if (id !== idUser || id !== idUser){
+                                                if (id !== idCollab){
                                                     collabList.push(id);
                                                 }
                                             });
-                                            collabList.push(idUser);
+                                            collabList.push(uid);
                                             addTaskCollab(cardtid, uid, collabList, idCollab);
                                         } else {
                                             removeTaskCollab(cardtid, uid, idCollab);
@@ -232,11 +232,11 @@ $(document).ready(function () {
 
                                         let collabList = [];
                                         collabOnTask.forEach(id => {
-                                            if (id !== idUser || id !== idUser){
+                                            if (id !== idCollab){
                                                 collabList.push(id);
                                             }
                                         });
-                                        collabList.push(idUser);
+                                        collabList.push(uid);
                                         addTaskCollab(cardtid, uid, collabList, idCollab);
                                     }
                                 });
