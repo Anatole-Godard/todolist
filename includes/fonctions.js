@@ -1,4 +1,4 @@
-//readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
+//
 //           readTaskCreateCard(Type_de_tache[String], ID_de_div[String],db[Object],idUser[String])
 //
 //description :
@@ -58,7 +58,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
                 '<p class="card-text creationdate d-none">' + doc.data().creationdate + '</p>' +
                 '</div>';
 
-            //construction du pied de carte
+
             let classDate = "";
             let classReminder = "";
 
@@ -71,7 +71,7 @@ function readTaskCreateCard(tasktype, taskdiv, db, idUser) {
             if (doc.data().datereminder !== ""){
                 classReminder = "textActive";
             }
-
+//construction du pied de carte
             var cardfooter =
                 '<div class="card-footer" xmlns="http://www.w3.org/1999/html">' +
                 '<div class="row">' +
