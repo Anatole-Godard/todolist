@@ -34,3 +34,11 @@
 .tui-full-calendar-weekday-schedule-bullet{
     background-color: white!important;
 }
+
+.tui-full-calendar-popup-detail-date{
+    display: none;
+}
+
+.tui-full-calendar-section-button{
+    display: none;
+}

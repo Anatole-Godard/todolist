@@ -111,16 +111,16 @@ $(document).ready(function () {
 
     $('.js-calendar-next').on('click', function () {
         calendar.next();
-        setCalendarTitleText();
+        // setCalendarTitleText();
     });
 
     $('.js-calendar-prev').on('click', function () {
         calendar.prev();
-        setCalendarTitleText();
+        // setCalendarTitleText();
     });
 
     $('.js-calendar-today').on('click', function () {
         calendar.today();
-        setCalendarTitleText();
+        // setCalendarTitleText();
     });
 });
