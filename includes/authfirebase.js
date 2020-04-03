@@ -99,7 +99,7 @@ $(function () {
         // on charge la page maintask.html dans la div de contenu
         $('#mainContent').load('includes/mainTask.html',function () {
             // on injecte le titre de la page
-            $('#mainSubTitle').html('Taches de '+name);
+            $('#mainSubTitle').html('T&acirc;ches de '+name);
         });
 
         // on ajoute le bouton mon compte dans la navbar
@@ -142,7 +142,7 @@ $(function () {
 
             // on charge la page maintask.html dans la div de contenu
             $('#mainContent').load('includes/mainTask.html',function () {
-                $('#mainSubTitle').html('Taches de '+name);
+                $('#mainSubTitle').html('T&acirc;ches de '+name);
             })
 
             // on ajoute le bouton mon compte dans la navbar
