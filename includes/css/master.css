@@ -50,7 +50,7 @@
 
 .bg-Travail {
     background-color: #00ffcc;
-    color: black;
+    color: black!important;
 }
 
 .bg-anniversaire {
